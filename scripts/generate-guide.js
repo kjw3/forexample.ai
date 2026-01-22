@@ -1,12 +1,10 @@
-const Anthropic = require('@anthropic-ai/sdk');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
-// Initialize Anthropic client
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+// NVIDIA API Configuration
+const NVIDIA_API_BASE = 'https://integrate.api.nvidia.com/v1';
+const NVIDIA_MODEL = 'meta/llama-3.1-70b-instruct'; // Free tier model
 
 // File paths
 const TOPICS_FILE = path.join(__dirname, '..', 'topics.json');
@@ -49,7 +47,7 @@ function selectNextTopic(topics, generatedTopics) {
   return unusedTopics[Math.floor(Math.random() * unusedTopics.length)];
 }
 
-// Generate guide content using Claude
+// Generate guide content using NVIDIA API
 async function generateGuideContent(topic) {
   const prompt = `Create an educational guide about "${topic.title}" for an AI learning website.
 
@@ -73,18 +71,34 @@ Write in Markdown format. Use headers (##, ###), bullet points, numbered lists, 
 Do NOT include the front matter (YAML) - only the content body.
 Keep the tone friendly, educational, and encouraging.`;
 
-  const message = await anthropic.messages.create({
-    model: 'claude-sonnet-4-5-20250929',
-    max_tokens: 4096,
-    messages: [
+  try {
+    const response = await axios.post(
+      `${NVIDIA_API_BASE}/chat/completions`,
       {
-        role: 'user',
-        content: prompt
+        model: NVIDIA_MODEL,
+        messages: [
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: 0.7,
+        top_p: 1,
+        max_tokens: 4096
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
       }
-    ]
-  });
+    );
 
-  return message.content[0].text;
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    console.error('NVIDIA API Error:', error.response?.data || error.message);
+    throw error;
+  }
 }
 
 // Create filename from title
@@ -235,8 +249,8 @@ async function main() {
     console.log('Starting guide generation...');
 
     // Check for API key
-    if (!process.env.ANTHROPIC_API_KEY) {
-      throw new Error('ANTHROPIC_API_KEY environment variable is not set');
+    if (!process.env.NVIDIA_API_KEY) {
+      throw new Error('NVIDIA_API_KEY environment variable is not set');
     }
 
     // Load topics
@@ -248,7 +262,7 @@ async function main() {
     console.log(`Selected topic: ${topic.title} (${topic.difficulty})`);
 
     // Generate content
-    console.log('Generating content with Claude...');
+    console.log('Generating content with NVIDIA API...');
     const content = await generateGuideContent(topic);
 
     // Fetch image

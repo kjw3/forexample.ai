@@ -1,10 +1,10 @@
 # For Example AI
 
-An AI education website that automatically generates and publishes step-by-step guides on AI topics. Built with Jekyll and powered by Claude AI, new educational content is automatically created and deployed on every commit.
+An AI education website that automatically generates and publishes step-by-step guides on AI topics. Built with Jekyll and powered by NVIDIA's free AI models, new educational content is automatically created and deployed on every commit.
 
 ## Features
 
-- **Automatic Content Generation**: AI-powered guide generation using Claude Sonnet 4.5
+- **Automatic Content Generation**: AI-powered guide generation using NVIDIA's free Llama 3.1 70B model
 - **Visual Engagement**: Automatic image fetching from Unsplash for each guide
 - **Instructables-Style Design**: Clear, step-by-step guides with approachable language
 - **Difficulty Levels**: Beginner, Intermediate, and Advanced topics
@@ -21,7 +21,7 @@ Visit the site at: [https://forexample.ai](https://forexample.ai) (configure you
 1. Every push to the `main` branch triggers a GitHub Actions workflow
 2. The workflow runs a Node.js script that:
    - Selects an unused topic from the curated list
-   - Calls the Claude API to generate an educational guide
+   - Calls NVIDIA's free API to generate an educational guide
    - Fetches a relevant image from Unsplash
    - Creates a markdown file with proper front matter and image attribution
    - Commits the new guide back to the repository
@@ -33,7 +33,17 @@ Visit the site at: [https://forexample.ai](https://forexample.ai) (configure you
 
 - Node.js 20 or higher
 - A GitHub account
-- An Anthropic API key ([get one here](https://console.anthropic.com/))
+- A free NVIDIA API key ([get one here](https://build.nvidia.com/))
+
+### Getting Your Free NVIDIA API Key
+
+1. Visit [build.nvidia.com](https://build.nvidia.com/)
+2. Click "Get API Key" or sign in with your NVIDIA account (free to create)
+3. Navigate to any model page (e.g., "meta/llama-3.1-70b-instruct")
+4. Click "Get API Key" button
+5. Copy your API key - you'll use this for both local development and GitHub
+
+**Note**: NVIDIA's API is completely free with generous rate limits - no credit card required!
 
 ### Local Development
 
@@ -55,7 +65,7 @@ Visit the site at: [https://forexample.ai](https://forexample.ai) (configure you
 
 4. **Set up your API key**
    ```bash
-   export ANTHROPIC_API_KEY='your-api-key-here'
+   export NVIDIA_API_KEY='your-api-key-here'
    ```
 
 5. **Generate a guide locally** (optional)
@@ -75,11 +85,11 @@ Visit the site at: [https://forexample.ai](https://forexample.ai) (configure you
    - Create a new repository on GitHub
    - Name it `forexample.ai` (or your preferred name)
 
-2. **Add your Anthropic API key as a secret**
+2. **Add your NVIDIA API key as a secret**
    - Go to repository Settings → Secrets and variables → Actions
    - Click "New repository secret"
-   - Name: `ANTHROPIC_API_KEY`
-   - Value: Your Anthropic API key
+   - Name: `NVIDIA_API_KEY`
+   - Value: Your free NVIDIA API key from build.nvidia.com
    - Click "Add secret"
 
 3. **Push your code**
@@ -143,7 +153,7 @@ Edit `topics.json` to add new topics:
 ### Adjusting Content Generation
 
 Edit `scripts/generate-guide.js` to:
-- Change the AI model (currently using Claude Sonnet 4.5)
+- Change the AI model (currently using NVIDIA's Llama 3.1 70B - see other free models at build.nvidia.com)
 - Modify the prompt for different content styles
 - Adjust the guide structure or format
 
@@ -221,7 +231,7 @@ Each guide includes:
 
 ## Troubleshooting
 
-### Workflow fails with "ANTHROPIC_API_KEY not set"
+### Workflow fails with "NVIDIA_API_KEY not set"
 
 Make sure you've added your API key as a GitHub secret (see GitHub Setup step 2).
 
@@ -233,7 +243,7 @@ Make sure you've added your API key as a GitHub secret (see GitHub Setup step 2)
 
 ### Generated guide has formatting issues
 
-Check the Claude API response in the workflow logs. You may need to adjust the prompt in `generate-guide.js`.
+Check the NVIDIA API response in the workflow logs. You may need to adjust the prompt in `generate-guide.js`.
 
 ### Running out of topics
 
@@ -243,9 +253,10 @@ The script will automatically reset and reuse topics when all have been generate
 
 - **GitHub Pages**: Free for public repositories
 - **GitHub Actions**: 2,000 minutes/month free for public repositories
-- **Anthropic API**: Pay-as-you-go pricing
-  - Each guide generation uses ~4,000 tokens (~$0.02 with Sonnet 4.5)
-  - Generating one guide per commit is very affordable
+- **NVIDIA API**: **Completely FREE** with generous rate limits
+  - No credit card required
+  - Access to powerful models like Llama 3.1 70B
+  - Perfect for educational and personal projects
 
 ## Customization Ideas
 
@@ -272,6 +283,7 @@ MIT License - feel free to use this for your own educational sites!
 ## Acknowledgments
 
 - Built with [Jekyll](https://jekyllrb.com/)
-- Powered by [Claude AI](https://www.anthropic.com/)
+- Powered by [NVIDIA AI](https://build.nvidia.com/) - free AI models
 - Hosted on [GitHub Pages](https://pages.github.com/)
 - Design inspired by [Instructables](https://www.instructables.com/)
+- Images from [Unsplash](https://unsplash.com/)

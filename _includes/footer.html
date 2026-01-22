@@ -4,15 +4,8 @@
             <p class="footer-text">
                 {{ site.title }} - AI education guides automatically generated and updated.
             </p>
-            <p class="footer-links">
-                <a href="{{ '/' | relative_url }}">Home</a>
-                {% if site.github_username %}
-                <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">GitHub</a>
-                {% endif %}
-            </p>
-            <p class="footer-credit">
-                Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll</a>
-                and <a href="https://build.nvidia.com/" target="_blank" rel="noopener">NVIDIA AI</a>
+            <p class="footer-copyright">
+                © {{ 'now' | date: "%Y" }} For Example AI. All rights reserved.
             </p>
         </div>
     </div>

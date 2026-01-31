@@ -19,15 +19,13 @@ Hey there, AI enthusiasts! 👋 Today, we're going to dive into one of the most 
 **Prerequisites:**
 No prerequisites needed, but a basic understanding of neural networks will be helpful.
 
-**What are Activation Functions?**
---------------------------------
+## What are Activation Functions?
 
 Activation functions are the magic that happens inside a neural network's neurons. They're the decision-makers that determine whether a neuron should fire or not. Think of them as the " gatekeepers" of information flow.
 
 Here's how it works: when a neuron receives inputs from other neurons, it calculates a weighted sum of those inputs. Then, the activation function kicks in and decides whether the neuron should fire or not. If the output is above a certain threshold, the neuron fires, and the output is sent to other neurons. If not, the output is suppressed.
 
-**Step-by-Step Explanation:**
------------------------------
+## Step-by-Step Explanation:
 
 ### Step 1: Understanding the Basics
 
@@ -56,27 +54,23 @@ Choosing the right activation function depends on the problem you're trying to s
 
 > **🎯 Key Insight:** The choice of activation function can significantly impact the performance of your neural network.
 
-**Real-World Examples:**
----------------------
+## Real-World Examples:
 
 * **Image classification**: In image classification problems, ReLU is often used in the hidden layers, while sigmoid is used in the output layer to predict the probability of each class.
 * **Natural language processing**: In NLP problems, tanh is often used in the hidden layers, while softmax is used in the output layer to predict the probability of each word.
 
-**Try It Yourself:**
------------------
+## Try It Yourself:
 
 * **Experiment with different activation functions**: Try using different activation functions in your neural network and see how it affects the performance.
 * **Use a pre-trained model**: Use a pre-trained model (e.g., VGG16) and modify the activation function to see how it affects the performance.
 
-**Key Takeaways:**
-----------------
+## Key Takeaways:
 
 * Activation functions are the decision-makers of neural networks.
 * Choosing the right activation function depends on the problem you're trying to solve.
 * Different activation functions have different strengths and weaknesses.
 
-**Further Reading:**
------------------
+## Further Reading:
 
 * [3Blue1Brown Neural Networks](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi) - Excellent visual explanation series
 * [Fast.ai Practical Deep Learning](https://course.fast.ai/) - Free hands-on course

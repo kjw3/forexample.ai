@@ -22,7 +22,6 @@ Hey there, fellow AI enthusiasts! 👋 Today, we're going to dive into the fasci
 No prerequisites needed! We'll cover the basics of Gradient Descent, so feel free to jump right in.
 
 ## What is Gradient Descent? 🤔
---------------------------------
 
 Gradient Descent is an optimization algorithm used to minimize the loss function of a model. It's an iterative process that adjusts the model's parameters to reduce the error between predicted and actual outputs.
 
@@ -39,7 +38,6 @@ Here's a step-by-step breakdown of the Gradient Descent process:
 5. **Repeat**: We repeat steps 2-4 until convergence or a stopping criterion is reached.
 
 ## Types of Gradient Descent 📈
-------------------------------
 
 There are several variants of Gradient Descent, each with its strengths and weaknesses:
 
@@ -61,7 +59,6 @@ There are several variants of Gradient Descent, each with its strengths and weak
 > **⚠️ Watch Out:** Choosing the right variant of Gradient Descent depends on the specific problem and dataset. Experiment with different variants to find the best approach.
 
 ## Real-World Examples 🌎
--------------------------
 
 Gradient Descent is widely used in many applications, including:
 
@@ -71,21 +68,18 @@ Gradient Descent is widely used in many applications, including:
 > **🎯 Key Insight:** Gradient Descent is a fundamental algorithm in AI, and understanding its variants and applications is crucial for building efficient models.
 
 ## Try It Yourself 🎯
-----------------------
 
 1. Implement a simple Gradient Descent algorithm in Python using NumPy.
 2. Experiment with different variants of Gradient Descent (batch, stochastic, mini-batch) on a simple dataset.
 3. Visualize the convergence of the algorithm using a plot.
 
 ## Key Takeaways 📝
--------------------
 
 * Gradient Descent is an optimization algorithm used to minimize the loss function of a model.
 * There are several variants of Gradient Descent, each with its strengths and weaknesses.
 * Choosing the right variant depends on the specific problem and dataset.
 
 ## Further Reading 📚
-----------------------
 
 * [CS231n: Convolutional Neural Networks for Visual Recognition](https://cs231n.github.io/optimization-1/)
 * A comprehensive guide to optimization algorithms, including Gradient Descent.

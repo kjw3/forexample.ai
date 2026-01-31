@@ -14,13 +14,11 @@ image_credit_url: "https://build.nvidia.com/black-forest-labs/flux_1-schnell"
 **AI in Healthcare: Diagnosis and Treatment** 🏥💡
 =====================================================
 
-**Introduction**
----------------
+## Introduction
 
 Imagine a world where doctors can diagnose diseases more accurately and quickly than ever before, and patients can receive personalized treatment plans tailored to their specific needs. Sounds like science fiction, right? Well, with the help of Artificial Intelligence (AI), this world is becoming a reality! In this guide, we'll explore the exciting world of AI in healthcare, focusing on diagnosis and treatment. Buckle up, folks! 🚀
 
 ## Prerequisites
------------------
 
 No prerequisites needed, but a basic understanding of AI concepts and healthcare terminology will be helpful.
 

@@ -36,8 +36,61 @@ function generateImagePrompt(title, tags) {
   return `Abstract tech illustration with ${keywords} theme, clean modern design, vibrant gradients with blue purple teal colors, geometric shapes, flowing lines, futuristic tech motifs, educational style, high quality digital art. IMPORTANT: absolutely no text, no words, no letters, no typography, no labels, pure visual abstract design only`;
 }
 
-// Generate and save image using NVIDIA's FLUX.1-schnell with retry logic
-async function generateAndSaveImage(title, tags, maxRetries = 5) {
+// Helper function to try generating image with a specific FLUX model
+async function tryGenerateWithModel(prompt, modelUrl, modelName, steps, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`  Attempt ${attempt}/${maxRetries}: Sending prompt to ${modelName}...`);
+
+      const response = await axios.post(
+        modelUrl,
+        {
+          prompt: prompt,
+          width: 1024,
+          height: 1024,
+          seed: Math.floor(Math.random() * 1000000),
+          steps: steps
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          timeout: 300000 // 5 minute timeout
+        }
+      );
+
+      if (!response.data || !response.data.artifacts || response.data.artifacts.length === 0) {
+        throw new Error('No image data in response');
+      }
+
+      const artifact = response.data.artifacts[0];
+      if (artifact.finishReason !== 'SUCCESS') {
+        throw new Error(`Image generation failed: ${artifact.finishReason}`);
+      }
+
+      return artifact.base64;
+
+    } catch (error) {
+      console.error(`  ✗ Attempt ${attempt} failed:`, error.message);
+      if (error.response) {
+        console.error('  API Response:', JSON.stringify(error.response.data) || error.response.status);
+      }
+
+      if (attempt < maxRetries) {
+        const waitTime = Math.pow(2, attempt) * 10000; // 20s, 40s, 80s
+        console.log(`  Waiting ${waitTime/1000}s before retry...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+    }
+  }
+
+  return null;
+}
+
+// Generate and save image using NVIDIA's FLUX models with fallback
+async function generateAndSaveImage(title, tags) {
   const slug = title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -55,79 +108,66 @@ async function generateAndSaveImage(title, tags, maxRetries = 5) {
     };
   }
 
-  console.log(`  Generating AI image with NVIDIA FLUX.1-schnell...`);
+  console.log(`  Generating AI image with NVIDIA FLUX...`);
 
-  // Retry loop with exponential backoff
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      if (attempt > 1) {
-        console.log(`  Retry attempt ${attempt}/${maxRetries}...`);
-      }
+  const prompt = generateImagePrompt(title, tags);
+  let imageBase64 = null;
+  let modelUsed = null;
 
-      // Generate prompt
-      const prompt = generateImagePrompt(title, tags);
+  // Try FLUX.1-schnell first (faster, 4 steps)
+  console.log('  🎨 Trying FLUX.1-schnell (fast model)...');
+  imageBase64 = await tryGenerateWithModel(
+    prompt,
+    'https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-schnell',
+    'FLUX.1-schnell',
+    4,
+    3
+  );
 
-      // Call NVIDIA FLUX API
-      const response = await axios.post(
-        'https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-schnell',
-        {
-          prompt: prompt,
-          width: 1024,
-          height: 1024,
-          seed: Math.floor(Math.random() * 1000000),
-          steps: 4 // schnell is optimized for 1-4 steps
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          timeout: 300000 // 5 minute timeout for image generation
-        }
-      );
+  if (imageBase64) {
+    modelUsed = 'schnell';
+  } else {
+    // Fallback to FLUX.1-dev (slower but more reliable)
+    console.log('  🔄 FLUX.1-schnell failed, falling back to FLUX.1-dev (slower but more reliable)...');
+    imageBase64 = await tryGenerateWithModel(
+      prompt,
+      'https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-dev',
+      'FLUX.1-dev',
+      50,
+      2
+    );
 
-      // Extract image data from response
-      // NVIDIA returns base64 encoded image in artifacts array
-      if (!response.data || !response.data.artifacts || response.data.artifacts.length === 0) {
-        throw new Error('No image data in response');
-      }
-
-      const artifact = response.data.artifacts[0];
-      if (artifact.finishReason !== 'SUCCESS') {
-        throw new Error(`Image generation failed: ${artifact.finishReason}`);
-      }
-
-      // Decode base64 image and save
-      const imageBuffer = Buffer.from(artifact.base64, 'base64');
-      fs.writeFileSync(filepath, imageBuffer);
-      console.log(`  ✓ AI-generated image saved: ${filename}`);
-
-      return {
-        path: `/assets/images/guides/${filename}`,
-        credit: 'Generated by NVIDIA FLUX.1-schnell',
-        credit_url: 'https://build.nvidia.com/black-forest-labs/flux_1-schnell'
-      };
-
-    } catch (error) {
-      console.error(`  ✗ Attempt ${attempt} failed:`, error.message);
-      if (error.response) {
-        console.error('  API Response:', JSON.stringify(error.response.data) || error.response.status);
-      }
-
-      // If this wasn't the last attempt, wait before retrying
-      if (attempt < maxRetries) {
-        const waitTime = Math.pow(2, attempt) * 10000; // Exponential backoff: 20s, 40s, 80s, 160s
-        console.log(`  Waiting ${waitTime/1000}s before retry...`);
-        await new Promise(resolve => setTimeout(resolve, waitTime));
-      } else {
-        console.error(`  ⚠️  All ${maxRetries} attempts failed.`);
-        return null;
-      }
+    if (imageBase64) {
+      modelUsed = 'dev';
     }
   }
 
-  return null;
+  // If both models failed
+  if (!imageBase64) {
+    console.error('  ⚠️  All attempts with both FLUX models failed.');
+    return null;
+  }
+
+  // Save the image
+  const imageBuffer = Buffer.from(imageBase64, 'base64');
+  fs.writeFileSync(filepath, imageBuffer);
+
+  const creditInfo = modelUsed === 'schnell'
+    ? {
+        credit: 'Generated by NVIDIA FLUX.1-schnell',
+        credit_url: 'https://build.nvidia.com/black-forest-labs/flux_1-schnell'
+      }
+    : {
+        credit: 'Generated by NVIDIA FLUX.1-dev',
+        credit_url: 'https://build.nvidia.com/black-forest-labs/flux_1-dev'
+      };
+
+  console.log(`  ✓ AI-generated image saved: ${filename} (using ${modelUsed})`);
+
+  return {
+    path: `/assets/images/guides/${filename}`,
+    ...creditInfo
+  };
 }
 
 // Update guide front matter with image data

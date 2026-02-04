@@ -32,7 +32,21 @@ function saveGeneratedTopics(generatedTopics) {
   fs.writeFileSync(GENERATED_TOPICS_FILE, JSON.stringify(generatedTopics, null, 2));
 }
 
-// Select next topic
+// Helper: Convert title to slug format for comparison
+function titleToSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// Select next topic with smart series prioritization
+// Priority order:
+//   1. Continue in-progress series (previous part published)
+//   2. Start beginner-friendly series (part 1, difficulty: beginner)
+//   3. Start any series (part 1)
+//   4. Any series topic
+//   5. Random standalone topic
 function selectNextTopic(topics, generatedTopics) {
   const unusedTopics = topics.filter(
     topic => !generatedTopics.includes(topic.title)
@@ -44,7 +58,71 @@ function selectNextTopic(topics, generatedTopics) {
     return topics[Math.floor(Math.random() * topics.length)];
   }
 
-  return unusedTopics[Math.floor(Math.random() * unusedTopics.length)];
+  // Convert generated topics to slug format for matching
+  const generatedSlugs = generatedTopics.map(titleToSlug);
+
+  // PRIORITY 1: Complete in-progress series (previous part already published)
+  const continueSeriesTopics = unusedTopics.filter(topic => {
+    if (!topic.series || !topic.series.previous) return false;
+
+    // Check if the previous part has been generated
+    const previousSlug = topic.series.previous;
+    const previousPublished = generatedSlugs.some(slug => slug === previousSlug);
+
+    return previousPublished;
+  });
+
+  if (continueSeriesTopics.length > 0) {
+    // Sort by series part number to maintain order
+    continueSeriesTopics.sort((a, b) => {
+      if (a.series.name === b.series.name) {
+        return a.series.part - b.series.part;
+      }
+      return 0;
+    });
+
+    const selected = continueSeriesTopics[0];
+    console.log(`📚 Continuing series: "${selected.series.name}" (Part ${selected.series.part}/${selected.series.total})`);
+    return selected;
+  }
+
+  // PRIORITY 2: Start beginner-friendly series
+  const beginnerSeriesStarts = unusedTopics.filter(topic =>
+    topic.series &&
+    topic.series.part === 1 &&
+    topic.difficulty === 'beginner'
+  );
+
+  if (beginnerSeriesStarts.length > 0) {
+    const selected = beginnerSeriesStarts[Math.floor(Math.random() * beginnerSeriesStarts.length)];
+    console.log(`🌟 Starting beginner series: "${selected.series.name}"`);
+    return selected;
+  }
+
+  // PRIORITY 3: Start any series
+  const seriesStarts = unusedTopics.filter(topic =>
+    topic.series && topic.series.part === 1
+  );
+
+  if (seriesStarts.length > 0) {
+    const selected = seriesStarts[Math.floor(Math.random() * seriesStarts.length)];
+    console.log(`📖 Starting series: "${selected.series.name}"`);
+    return selected;
+  }
+
+  // PRIORITY 4: Any series topic (in case previous parts aren't done yet)
+  const anySeriesTopics = unusedTopics.filter(t => t.series);
+
+  if (anySeriesTopics.length > 0) {
+    const selected = anySeriesTopics[Math.floor(Math.random() * anySeriesTopics.length)];
+    console.log(`📝 Generating series topic: "${selected.series.name}" (Part ${selected.series.part}/${selected.series.total})`);
+    return selected;
+  }
+
+  // FALLBACK: Random standalone topic
+  const selected = unusedTopics[Math.floor(Math.random() * unusedTopics.length)];
+  console.log(`📄 Generating standalone topic`);
+  return selected;
 }
 
 // Validate a URL by checking if it returns a successful response
@@ -129,8 +207,29 @@ async function validateLinksInContent(content) {
 
 // Generate guide content using NVIDIA API
 async function generateGuideContent(topic) {
-  const prompt = `Create an educational guide about "${topic.title}" for an AI learning website called "For Example AI".
+  // Add series context if this is part of a series
+  let seriesContext = '';
+  if (topic.series) {
+    seriesContext = `
+SERIES CONTEXT:
+This guide is part ${topic.series.part} of ${topic.series.total} in the "${topic.series.name}" series.`;
 
+    if (topic.series.previous) {
+      seriesContext += `\nPrevious guide: "${topic.series.previous.replace(/-/g, ' ')}"`;
+    }
+    if (topic.series.next) {
+      seriesContext += `\nNext guide: "${topic.series.next.replace(/-/g, ' ')}"`;
+    }
+
+    seriesContext += `\n- Assume readers may have completed previous parts if applicable
+- Build on concepts from earlier parts naturally
+- Reference previous parts when helpful but don't require them
+- Make this guide valuable both standalone AND as part of the series
+`;
+  }
+
+  const prompt = `Create an educational guide about "${topic.title}" for an AI learning website called "For Example AI".
+${seriesContext}
 WRITING STYLE & PERSONALITY:
 - Write with personality! Be conversational, enthusiastic, and human
 - Use "I" and "we" occasionally to create connection with readers
@@ -455,7 +554,7 @@ async function createGuideFile(topic, content, imageData) {
   const wordCount = content.split(/\s+/).length;
   const readingTime = Math.ceil(wordCount / 200);
 
-  // Build front matter with optional image data
+  // Build front matter with optional image data and series info
   let frontMatter = `---
 layout: guide
 title: "${topic.title}"
@@ -470,6 +569,24 @@ estimated_time: "${readingTime} min read"`;
 image: "${imageData.path}"
 image_credit: "${imageData.credit}"
 image_credit_url: "${imageData.credit_url}"`;
+  }
+
+  // Add series metadata if present
+  if (topic.series) {
+    frontMatter += `
+series:
+  name: "${topic.series.name}"
+  part: ${topic.series.part}
+  total: ${topic.series.total}`;
+
+    if (topic.series.previous) {
+      frontMatter += `
+  previous: "${topic.series.previous}"`;
+    }
+    if (topic.series.next) {
+      frontMatter += `
+  next: "${topic.series.next}"`;
+    }
   }
 
   frontMatter += `

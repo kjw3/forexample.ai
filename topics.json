@@ -2,27 +2,81 @@
   {
     "title": "What is Artificial Intelligence?",
     "difficulty": "beginner",
-    "tags": ["basics", "introduction", "ai-fundamentals"]
+    "tags": ["basics", "introduction", "ai-fundamentals"],
+    "series": {
+      "name": "AI Fundamentals for Beginners",
+      "part": 1,
+      "total": 4,
+      "next": "the-difference-between-ai-machine-learning-and-deep-learning"
+    }
   },
   {
     "title": "How ChatGPT Works: A Simple Explanation",
     "difficulty": "beginner",
-    "tags": ["chatgpt", "language-models", "basics"]
+    "tags": ["chatgpt", "language-models", "basics"],
+    "series": {
+      "name": "Understanding Transformers",
+      "part": 1,
+      "total": 4,
+      "next": "understanding-transformer-architecture"
+    }
   },
   {
     "title": "AI in Your Daily Life: Examples You Might Not Notice",
     "difficulty": "beginner",
-    "tags": ["applications", "daily-life", "introduction"]
+    "tags": ["applications", "daily-life", "introduction"],
+    "series": {
+      "name": "AI Fundamentals for Beginners",
+      "part": 4,
+      "total": 4,
+      "previous": "what-can-ai-do-current-capabilities-and-limitations"
+    }
   },
   {
     "title": "The Difference Between AI, Machine Learning, and Deep Learning",
     "difficulty": "beginner",
-    "tags": ["basics", "terminology", "concepts"]
+    "tags": ["basics", "terminology", "concepts"],
+    "series": {
+      "name": "AI Fundamentals for Beginners",
+      "part": 2,
+      "total": 4,
+      "previous": "what-is-artificial-intelligence",
+      "next": "what-can-ai-do-current-capabilities-and-limitations"
+    }
   },
   {
     "title": "How to Write Better Prompts for AI",
     "difficulty": "beginner",
-    "tags": ["prompt-engineering", "chatgpt", "practical"]
+    "tags": ["prompt-engineering", "chatgpt", "practical"],
+    "series": {
+      "name": "Prompt Engineering Mastery",
+      "part": 1,
+      "total": 3,
+      "next": "advanced-prompt-engineering-techniques"
+    }
+  },
+  {
+    "title": "Advanced Prompt Engineering Techniques",
+    "difficulty": "intermediate",
+    "tags": ["prompt-engineering", "chatgpt", "practical", "advanced-techniques"],
+    "series": {
+      "name": "Prompt Engineering Mastery",
+      "part": 2,
+      "total": 3,
+      "previous": "how-to-write-better-prompts-for-ai",
+      "next": "prompt-engineering-for-developers"
+    }
+  },
+  {
+    "title": "Prompt Engineering for Developers",
+    "difficulty": "advanced",
+    "tags": ["prompt-engineering", "api", "development", "production"],
+    "series": {
+      "name": "Prompt Engineering Mastery",
+      "part": 3,
+      "total": 3,
+      "previous": "advanced-prompt-engineering-techniques"
+    }
   },
   {
     "title": "Understanding Tokens in Language Models",
@@ -32,7 +86,14 @@
   {
     "title": "What Can AI Do? Current Capabilities and Limitations",
     "difficulty": "beginner",
-    "tags": ["capabilities", "limitations", "overview"]
+    "tags": ["capabilities", "limitations", "overview"],
+    "series": {
+      "name": "AI Fundamentals for Beginners",
+      "part": 3,
+      "total": 4,
+      "previous": "the-difference-between-ai-machine-learning-and-deep-learning",
+      "next": "ai-in-your-daily-life-examples-you-might-not-notice"
+    }
   },
   {
     "title": "AI Image Generation: How DALL-E and Midjourney Work",
@@ -47,17 +108,37 @@
   {
     "title": "What is a Neural Network?",
     "difficulty": "intermediate",
-    "tags": ["neural-networks", "machine-learning", "basics"]
+    "tags": ["neural-networks", "machine-learning", "basics"],
+    "series": {
+      "name": "Neural Networks Fundamentals",
+      "part": 1,
+      "total": 3,
+      "next": "how-neural-networks-learn-backpropagation-explained"
+    }
   },
   {
     "title": "How Neural Networks Learn: Backpropagation Explained",
     "difficulty": "intermediate",
-    "tags": ["neural-networks", "training", "backpropagation"]
+    "tags": ["neural-networks", "training", "backpropagation"],
+    "series": {
+      "name": "Neural Networks Fundamentals",
+      "part": 2,
+      "total": 3,
+      "previous": "what-is-a-neural-network",
+      "next": "understanding-activation-functions"
+    }
   },
   {
     "title": "Understanding Transformer Architecture",
     "difficulty": "intermediate",
-    "tags": ["transformers", "architecture", "deep-learning"]
+    "tags": ["transformers", "architecture", "deep-learning"],
+    "series": {
+      "name": "Understanding Transformers",
+      "part": 2,
+      "total": 4,
+      "previous": "how-chatgpt-works-a-simple-explanation",
+      "next": "understanding-attention-mechanisms"
+    }
   },
   {
     "title": "What is Training Data and Why Does It Matter?",
@@ -77,17 +158,36 @@
   {
     "title": "Natural Language Processing: From Text to Understanding",
     "difficulty": "intermediate",
-    "tags": ["nlp", "language-models", "text-processing"]
+    "tags": ["nlp", "language-models", "text-processing"],
+    "series": {
+      "name": "Natural Language Processing Journey",
+      "part": 1,
+      "total": 3,
+      "next": "understanding-embeddings-in-ai"
+    }
   },
   {
     "title": "Computer Vision Basics: How Machines See",
     "difficulty": "intermediate",
-    "tags": ["computer-vision", "image-processing", "cnn"]
+    "tags": ["computer-vision", "image-processing", "cnn"],
+    "series": {
+      "name": "Computer Vision Fundamentals",
+      "part": 1,
+      "total": 3,
+      "next": "what-are-convolutional-neural-networks"
+    }
   },
   {
     "title": "Understanding Embeddings in AI",
     "difficulty": "intermediate",
-    "tags": ["embeddings", "representation", "vectors"]
+    "tags": ["embeddings", "representation", "vectors"],
+    "series": {
+      "name": "Natural Language Processing Journey",
+      "part": 2,
+      "total": 3,
+      "previous": "natural-language-processing-from-text-to-understanding",
+      "next": "understanding-tokenization-methods"
+    }
   },
   {
     "title": "What is Transfer Learning?",
@@ -97,7 +197,13 @@
   {
     "title": "Overfitting and Underfitting in Machine Learning",
     "difficulty": "intermediate",
-    "tags": ["overfitting", "training", "model-optimization"]
+    "tags": ["overfitting", "training", "model-optimization"],
+    "series": {
+      "name": "Machine Learning Training Essentials",
+      "part": 4,
+      "total": 4,
+      "previous": "understanding-model-parameters-and-hyperparameters"
+    }
   },
   {
     "title": "How AI Detects Spam and Fraud",
@@ -112,12 +218,26 @@
   {
     "title": "What are Convolutional Neural Networks?",
     "difficulty": "intermediate",
-    "tags": ["cnn", "computer-vision", "neural-networks"]
+    "tags": ["cnn", "computer-vision", "neural-networks"],
+    "series": {
+      "name": "Computer Vision Fundamentals",
+      "part": 2,
+      "total": 3,
+      "previous": "computer-vision-basics-how-machines-see",
+      "next": "how-ai-recognizes-faces"
+    }
   },
   {
     "title": "Understanding Attention Mechanisms",
     "difficulty": "intermediate",
-    "tags": ["attention", "transformers", "mechanisms"]
+    "tags": ["attention", "transformers", "mechanisms"],
+    "series": {
+      "name": "Understanding Transformers",
+      "part": 3,
+      "total": 4,
+      "previous": "understanding-transformer-architecture",
+      "next": "the-architecture-of-gpt-models"
+    }
   },
   {
     "title": "How AI Plays Games: From Chess to Go",
@@ -137,12 +257,26 @@
   {
     "title": "Understanding Model Parameters and Hyperparameters",
     "difficulty": "advanced",
-    "tags": ["parameters", "hyperparameters", "optimization"]
+    "tags": ["parameters", "hyperparameters", "optimization"],
+    "series": {
+      "name": "Machine Learning Training Essentials",
+      "part": 3,
+      "total": 4,
+      "previous": "gradient-descent-optimization-algorithms",
+      "next": "overfitting-and-underfitting-in-machine-learning"
+    }
   },
   {
     "title": "Gradient Descent Optimization Algorithms",
     "difficulty": "advanced",
-    "tags": ["optimization", "gradient-descent", "training"]
+    "tags": ["optimization", "gradient-descent", "training"],
+    "series": {
+      "name": "Machine Learning Training Essentials",
+      "part": 2,
+      "total": 4,
+      "previous": "understanding-loss-functions",
+      "next": "understanding-model-parameters-and-hyperparameters"
+    }
   },
   {
     "title": "What are Generative Adversarial Networks (GANs)?",
@@ -152,7 +286,13 @@
   {
     "title": "The Architecture of GPT Models",
     "difficulty": "advanced",
-    "tags": ["gpt", "architecture", "language-models"]
+    "tags": ["gpt", "architecture", "language-models"],
+    "series": {
+      "name": "Understanding Transformers",
+      "part": 4,
+      "total": 4,
+      "previous": "understanding-attention-mechanisms"
+    }
   },
   {
     "title": "Retrieval-Augmented Generation (RAG) Explained",
@@ -172,12 +312,25 @@
   {
     "title": "Bias and Fairness in AI Systems",
     "difficulty": "intermediate",
-    "tags": ["ethics", "bias", "fairness"]
+    "tags": ["ethics", "bias", "fairness"],
+    "series": {
+      "name": "AI Ethics & Responsibility",
+      "part": 3,
+      "total": 4,
+      "previous": "ai-ethics-privacy-consent-and-data-rights",
+      "next": "ai-safety-and-alignment"
+    }
   },
   {
     "title": "AI Safety and Alignment",
     "difficulty": "advanced",
-    "tags": ["safety", "alignment", "ethics"]
+    "tags": ["safety", "alignment", "ethics"],
+    "series": {
+      "name": "AI Ethics & Responsibility",
+      "part": 4,
+      "total": 4,
+      "previous": "bias-and-fairness-in-ai-systems"
+    }
   },
   {
     "title": "Federated Learning: Privacy-Preserving AI",
@@ -222,12 +375,24 @@
   {
     "title": "Understanding Activation Functions",
     "difficulty": "intermediate",
-    "tags": ["activation-functions", "neural-networks", "components"]
+    "tags": ["activation-functions", "neural-networks", "components"],
+    "series": {
+      "name": "Neural Networks Fundamentals",
+      "part": 3,
+      "total": 3,
+      "previous": "how-neural-networks-learn-backpropagation-explained"
+    }
   },
   {
     "title": "The Environmental Impact of Training AI Models",
     "difficulty": "beginner",
-    "tags": ["environment", "sustainability", "ethics"]
+    "tags": ["environment", "sustainability", "ethics"],
+    "series": {
+      "name": "AI Ethics & Responsibility",
+      "part": 1,
+      "total": 4,
+      "next": "ai-ethics-privacy-consent-and-data-rights"
+    }
   },
   {
     "title": "Explainable AI: Making Black Boxes Transparent",
@@ -242,7 +407,13 @@
   {
     "title": "Understanding Loss Functions",
     "difficulty": "intermediate",
-    "tags": ["loss-functions", "training", "optimization"]
+    "tags": ["loss-functions", "training", "optimization"],
+    "series": {
+      "name": "Machine Learning Training Essentials",
+      "part": 1,
+      "total": 4,
+      "next": "gradient-descent-optimization-algorithms"
+    }
   },
   {
     "title": "The Future of AI: Current Trends and Predictions",
@@ -257,7 +428,13 @@
   {
     "title": "How AI Recognizes Faces",
     "difficulty": "intermediate",
-    "tags": ["computer-vision", "facial-recognition", "applications"]
+    "tags": ["computer-vision", "facial-recognition", "applications"],
+    "series": {
+      "name": "Computer Vision Fundamentals",
+      "part": 3,
+      "total": 3,
+      "previous": "what-are-convolutional-neural-networks"
+    }
   },
   {
     "title": "Understanding Recurrent Neural Networks (RNNs)",
@@ -307,7 +484,14 @@
   {
     "title": "AI Ethics: Privacy, Consent, and Data Rights",
     "difficulty": "beginner",
-    "tags": ["ethics", "privacy", "rights"]
+    "tags": ["ethics", "privacy", "rights"],
+    "series": {
+      "name": "AI Ethics & Responsibility",
+      "part": 2,
+      "total": 4,
+      "previous": "the-environmental-impact-of-training-ai-models",
+      "next": "bias-and-fairness-in-ai-systems"
+    }
   },
   {
     "title": "How AI Composes Music",
@@ -362,7 +546,13 @@
   {
     "title": "Understanding Tokenization Methods",
     "difficulty": "intermediate",
-    "tags": ["tokenization", "nlp", "preprocessing"]
+    "tags": ["tokenization", "nlp", "preprocessing"],
+    "series": {
+      "name": "Natural Language Processing Journey",
+      "part": 3,
+      "total": 3,
+      "previous": "understanding-embeddings-in-ai"
+    }
   },
   {
     "title": "What is Curriculum Learning?",
@@ -847,7 +1037,14 @@
   {
     "title": "What is Model Monitoring in Production?",
     "difficulty": "intermediate",
-    "tags": ["monitoring", "mlops", "production"]
+    "tags": ["monitoring", "mlops", "production"],
+    "series": {
+      "name": "AI in Production (MLOps Basics)",
+      "part": 3,
+      "total": 4,
+      "previous": "what-is-model-drift",
+      "next": "what-is-model-validation-pipeline"
+    }
   },
   {
     "title": "AI in Architecture: Design Generation",
@@ -862,7 +1059,14 @@
   {
     "title": "What is Model Drift?",
     "difficulty": "intermediate",
-    "tags": ["model-drift", "mlops", "monitoring"]
+    "tags": ["model-drift", "mlops", "monitoring"],
+    "series": {
+      "name": "AI in Production (MLOps Basics)",
+      "part": 2,
+      "total": 4,
+      "previous": "what-is-mlops",
+      "next": "what-is-model-monitoring-in-production"
+    }
   },
   {
     "title": "AI for Accessibility: Assistive Technologies",
@@ -952,7 +1156,13 @@
   {
     "title": "What is MLOps?",
     "difficulty": "intermediate",
-    "tags": ["mlops", "operations", "deployment"]
+    "tags": ["mlops", "operations", "deployment"],
+    "series": {
+      "name": "AI in Production (MLOps Basics)",
+      "part": 1,
+      "total": 4,
+      "next": "what-is-model-drift"
+    }
   },
   {
     "title": "AI for Smart Cities",
@@ -1192,7 +1402,13 @@
   {
     "title": "What is Model Validation Pipeline?",
     "difficulty": "intermediate",
-    "tags": ["validation-pipeline", "mlops", "automation"]
+    "tags": ["validation-pipeline", "mlops", "automation"],
+    "series": {
+      "name": "AI in Production (MLOps Basics)",
+      "part": 4,
+      "total": 4,
+      "previous": "what-is-model-monitoring-in-production"
+    }
   },
   {
     "title": "AI for Pest Control in Agriculture",

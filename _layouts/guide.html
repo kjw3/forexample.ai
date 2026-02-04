@@ -20,6 +20,48 @@ layout: default
         </div>
     </header>
 
+    {% if page.series %}
+    <div class="series-navigation">
+        <div class="container">
+            <div class="series-info">
+                <span class="series-badge">Series</span>
+                <h2 class="series-title">{{ page.series.name }}</h2>
+                <div class="series-progress">
+                    <span class="series-part">Part {{ page.series.part }} of {{ page.series.total }}</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ page.series.part | times: 100 | divided_by: page.series.total }}%"></div>
+                    </div>
+                </div>
+            </div>
+            <nav class="series-links">
+                {% if page.series.previous %}
+                <a href="{{ '/guides/' | append: page.series.previous | append: '/' | relative_url }}" class="series-link series-prev">
+                    <span class="arrow">←</span>
+                    <span class="link-text">
+                        <span class="link-label">Previous</span>
+                        <span class="link-title">{{ page.series.previous | replace: '-', ' ' | capitalize }}</span>
+                    </span>
+                </a>
+                {% else %}
+                <div class="series-link-placeholder"></div>
+                {% endif %}
+
+                {% if page.series.next %}
+                <a href="{{ '/guides/' | append: page.series.next | append: '/' | relative_url }}" class="series-link series-next">
+                    <span class="link-text">
+                        <span class="link-label">Next</span>
+                        <span class="link-title">{{ page.series.next | replace: '-', ' ' | capitalize }}</span>
+                    </span>
+                    <span class="arrow">→</span>
+                </a>
+                {% else %}
+                <div class="series-link-placeholder"></div>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+
     {% if page.image %}
     <div class="guide-image">
         <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" loading="lazy">

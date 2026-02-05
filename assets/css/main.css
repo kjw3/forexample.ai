@@ -697,6 +697,16 @@ body {
     gap: 1.5rem;
 }
 
+/* Single navigation button (first or last part) */
+.series-nav-links:has(.series-nav-link:only-child) {
+    grid-template-columns: 1fr;
+}
+
+.series-nav-links .series-nav-link:only-child {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 .series-nav-link {
     display: flex;
     align-items: center;

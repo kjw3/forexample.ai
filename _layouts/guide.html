@@ -53,7 +53,7 @@ layout: default
                         <span class="nav-title">{{ page.series.previous | replace: '-', ' ' | capitalize }}</span>
                     </div>
                 </a>
-                {% else %}
+                {% elsif page.series.part > 1 %}
                 <div class="series-nav-link prev coming-soon">
                     <span class="nav-arrow">←</span>
                     <div class="nav-content">
@@ -71,7 +71,7 @@ layout: default
                     </div>
                     <span class="nav-arrow">→</span>
                 </a>
-                {% else %}
+                {% elsif page.series.part < page.series.total %}
                 <div class="series-nav-link next coming-soon">
                     <div class="nav-content">
                         <span class="nav-label">Next</span>
@@ -107,7 +107,7 @@ layout: default
                         <span class="nav-title">{{ page.series.previous | replace: '-', ' ' | capitalize }}</span>
                     </div>
                 </a>
-                {% else %}
+                {% elsif page.series.part > 1 %}
                 <div class="series-nav-link prev coming-soon">
                     <span class="nav-arrow">←</span>
                     <div class="nav-content">
@@ -125,7 +125,7 @@ layout: default
                     </div>
                     <span class="nav-arrow">→</span>
                 </a>
-                {% else %}
+                {% elsif page.series.part < page.series.total %}
                 <div class="series-nav-link next coming-soon">
                     <div class="nav-content">
                         <span class="nav-label">Next</span>

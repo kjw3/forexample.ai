@@ -478,7 +478,7 @@ How do you know if your prompts actually work well? Manual testing doesn't scale
 
 ### Building a Test Suite
 
-**Step 1: Create Test Cases**
+## Step 1: Create Test Cases
 
 ```python
 test_cases = [
@@ -510,7 +510,7 @@ test_cases = [
 ]
 ```
 
-**Step 2: Run Automated Tests**
+## Step 2: Run Automated Tests
 
 ```python
 def test_prompt(prompt_template, test_cases):

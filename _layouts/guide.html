@@ -33,22 +33,17 @@ layout: default
 
     <div class="guide-content container">
         {% if page.series %}
-        <div class="series-info-box">
-            <div class="series-header">
-                <span class="series-badge">📚 Part {{ page.series.part }} of {{ page.series.total }}</span>
-                <span class="series-name">{{ page.series.name }}</span>
-            </div>
-            <div class="series-progress-bar">
-                <div class="series-progress-fill" style="width: {{ page.series.part | times: 100 | divided_by: page.series.total }}%"></div>
-            </div>
-        </div>
-        {% endif %}
-
-        {{ content }}
-
-        {% if page.series %}
         <nav class="series-navigation">
-            <h3 class="series-nav-title">Series Navigation</h3>
+            <div class="series-header">
+                <div class="series-title-wrapper">
+                    <span class="series-badge">📚 Part {{ page.series.part }} of {{ page.series.total }}</span>
+                    <h3 class="series-name">{{ page.series.name }}</h3>
+                </div>
+                <div class="series-progress-bar">
+                    <div class="series-progress-fill" style="width: {{ page.series.part | times: 100 | divided_by: page.series.total }}%"></div>
+                </div>
+            </div>
+
             <div class="series-nav-links">
                 {% if page.series.previous %}
                 <a href="{{ '/guides/' | append: page.series.previous | append: '/' | relative_url }}" class="series-nav-link prev">
@@ -58,6 +53,14 @@ layout: default
                         <span class="nav-title">{{ page.series.previous | replace: '-', ' ' | capitalize }}</span>
                     </div>
                 </a>
+                {% else %}
+                <div class="series-nav-link prev coming-soon">
+                    <span class="nav-arrow">←</span>
+                    <div class="nav-content">
+                        <span class="nav-label">Previous</span>
+                        <span class="nav-title coming-soon-text">Coming Soon</span>
+                    </div>
+                </div>
                 {% endif %}
 
                 {% if page.series.next %}
@@ -68,6 +71,68 @@ layout: default
                     </div>
                     <span class="nav-arrow">→</span>
                 </a>
+                {% else %}
+                <div class="series-nav-link next coming-soon">
+                    <div class="nav-content">
+                        <span class="nav-label">Next</span>
+                        <span class="nav-title coming-soon-text">Coming Soon</span>
+                    </div>
+                    <span class="nav-arrow">→</span>
+                </div>
+                {% endif %}
+            </div>
+        </nav>
+        {% endif %}
+
+        {{ content }}
+
+        {% if page.series %}
+        <nav class="series-navigation bottom">
+            <div class="series-header">
+                <div class="series-title-wrapper">
+                    <span class="series-badge">📚 Part {{ page.series.part }} of {{ page.series.total }}</span>
+                    <h3 class="series-name">{{ page.series.name }}</h3>
+                </div>
+                <div class="series-progress-bar">
+                    <div class="series-progress-fill" style="width: {{ page.series.part | times: 100 | divided_by: page.series.total }}%"></div>
+                </div>
+            </div>
+
+            <div class="series-nav-links">
+                {% if page.series.previous %}
+                <a href="{{ '/guides/' | append: page.series.previous | append: '/' | relative_url }}" class="series-nav-link prev">
+                    <span class="nav-arrow">←</span>
+                    <div class="nav-content">
+                        <span class="nav-label">Previous</span>
+                        <span class="nav-title">{{ page.series.previous | replace: '-', ' ' | capitalize }}</span>
+                    </div>
+                </a>
+                {% else %}
+                <div class="series-nav-link prev coming-soon">
+                    <span class="nav-arrow">←</span>
+                    <div class="nav-content">
+                        <span class="nav-label">Previous</span>
+                        <span class="nav-title coming-soon-text">Coming Soon</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if page.series.next %}
+                <a href="{{ '/guides/' | append: page.series.next | append: '/' | relative_url }}" class="series-nav-link next">
+                    <div class="nav-content">
+                        <span class="nav-label">Next</span>
+                        <span class="nav-title">{{ page.series.next | replace: '-', ' ' | capitalize }}</span>
+                    </div>
+                    <span class="nav-arrow">→</span>
+                </a>
+                {% else %}
+                <div class="series-nav-link next coming-soon">
+                    <div class="nav-content">
+                        <span class="nav-label">Next</span>
+                        <span class="nav-title coming-soon-text">Coming Soon</span>
+                    </div>
+                    <span class="nav-arrow">→</span>
+                </div>
                 {% endif %}
             </div>
         </nav>

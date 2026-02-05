@@ -4,6 +4,11 @@ title: "Understanding Attention Mechanisms"
 date: 2026-01-28
 difficulty: intermediate
 tags: ["attention", "transformers", "mechanisms"]
+series:
+  name: "Understanding Transformers"
+  part: 3
+  total: 4
+  previous: "understanding-transformer-architecture"
 description: "Learn about understanding attention mechanisms"
 estimated_time: "4 min read"
 image: "/assets/images/guides/understanding-attention-mechanisms.jpg"

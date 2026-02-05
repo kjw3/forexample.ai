@@ -4,6 +4,10 @@ title: "What is Model Validation Pipeline?"
 date: 2026-01-31
 difficulty: intermediate
 tags: ["validation-pipeline", "mlops", "automation"]
+series:
+  name: "AI in Production (MLOps Basics)"
+  part: 4
+  total: 4
 description: "Learn about what is model validation pipeline?"
 estimated_time: "4 min read"
 image: "/assets/images/guides/what-is-model-validation-pipeline.jpg"

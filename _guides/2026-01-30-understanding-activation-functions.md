@@ -4,6 +4,10 @@ title: "Understanding Activation Functions"
 date: 2026-01-30
 difficulty: intermediate
 tags: ["activation-functions", "neural-networks", "components"]
+series:
+  name: "Neural Networks Fundamentals"
+  part: 3
+  total: 3
 description: "Learn about understanding activation functions"
 estimated_time: "4 min read"
 image: "/assets/images/guides/understanding-activation-functions.jpg"

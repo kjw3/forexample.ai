@@ -4,6 +4,12 @@ title: "Gradient Descent Optimization Algorithms"
 date: 2026-01-29
 difficulty: advanced
 tags: ["optimization", "gradient-descent", "training"]
+series:
+  name: "Machine Learning Training Essentials"
+  part: 2
+  total: 4
+  previous: "understanding-loss-functions"
+  next: "understanding-model-parameters-and-hyperparameters"
 description: "A deep dive into gradient descent optimization algorithms"
 estimated_time: "4 min read"
 image: "/assets/images/guides/gradient-descent-optimization-algorithms.jpg"

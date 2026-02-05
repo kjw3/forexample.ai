@@ -4,6 +4,11 @@ title: "What is Artificial Intelligence?"
 date: 2026-01-22
 difficulty: beginner
 tags: ["basics", "introduction", "ai-fundamentals"]
+series:
+  name: "AI Fundamentals for Beginners"
+  part: 1
+  total: 4
+  next: "the-difference-between-ai-machine-learning-and-deep-learning"
 description: "A beginner-friendly introduction to what is artificial intelligence?"
 estimated_time: "8 min read"
 image: "/assets/images/guides/what-is-artificial-intelligence.jpg"

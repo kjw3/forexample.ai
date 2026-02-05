@@ -4,6 +4,12 @@ title: "AI Ethics: Privacy, Consent, and Data Rights"
 date: 2026-01-30
 difficulty: beginner
 tags: ["ethics", "privacy", "rights"]
+series:
+  name: "AI Ethics & Responsibility"
+  part: 2
+  total: 4
+  previous: "the-environmental-impact-of-training-ai-models"
+  next: "bias-and-fairness-in-ai-systems"
 description: "A beginner-friendly introduction to ai ethics: privacy, consent, and data rights"
 estimated_time: "5 min read"
 image: "/assets/images/guides/ai-ethics-privacy-consent-and-data-rights.jpg"

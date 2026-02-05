@@ -4,6 +4,11 @@ title: "The Environmental Impact of Training AI Models"
 date: 2026-01-24
 difficulty: beginner
 tags: ["environment", "sustainability", "ethics"]
+series:
+  name: "AI Ethics & Responsibility"
+  part: 1
+  total: 4
+  next: "ai-ethics-privacy-consent-and-data-rights"
 description: "A beginner-friendly introduction to the environmental impact of training ai models"
 estimated_time: "4 min read"
 image: "/assets/images/guides/the-environmental-impact-of-training-ai-models.jpg"

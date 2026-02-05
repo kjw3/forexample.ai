@@ -10,6 +10,8 @@
     "show-tags": "node scripts/add-topic.js --tags",
     "add-images": "node scripts/add-images-retroactive.js",
     "fix-formatting": "node scripts/fix-guide-formatting.js",
+    "fix-series": "node scripts/fix-series-metadata.js",
+    "fix-links": "node scripts/fix-broken-links.js",
     "review": "node scripts/review-guides.js",
     "review:fix": "node scripts/review-guides.js --fix"
   },

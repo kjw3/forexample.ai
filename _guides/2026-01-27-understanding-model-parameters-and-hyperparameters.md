@@ -4,6 +4,11 @@ title: "Understanding Model Parameters and Hyperparameters"
 date: 2026-01-27
 difficulty: advanced
 tags: ["parameters", "hyperparameters", "optimization"]
+series:
+  name: "Machine Learning Training Essentials"
+  part: 3
+  total: 4
+  previous: "gradient-descent-optimization-algorithms"
 description: "A deep dive into understanding model parameters and hyperparameters"
 estimated_time: "3 min read"
 image: "/assets/images/guides/understanding-model-parameters-and-hyperparameters.jpg"

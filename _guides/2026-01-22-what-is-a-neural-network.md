@@ -4,6 +4,10 @@ title: "What is a Neural Network?"
 date: 2026-01-22
 difficulty: intermediate
 tags: ["neural-networks", "machine-learning", "basics"]
+series:
+  name: "Neural Networks Fundamentals"
+  part: 1
+  total: 3
 description: "Learn about what is a neural network?"
 estimated_time: "12 min read"
 image: "/assets/images/guides/what-is-a-neural-network.jpg"

@@ -4,6 +4,11 @@ title: "Understanding Loss Functions"
 date: 2026-01-24
 difficulty: intermediate
 tags: ["loss-functions", "training", "optimization"]
+series:
+  name: "Machine Learning Training Essentials"
+  part: 1
+  total: 4
+  next: "gradient-descent-optimization-algorithms"
 description: "Learn about understanding loss functions"
 estimated_time: "3 min read"
 image: "/assets/images/guides/understanding-loss-functions.jpg"

@@ -4,6 +4,11 @@ title: "Bias and Fairness in AI Systems"
 date: 2026-01-24
 difficulty: intermediate
 tags: ["ethics", "bias", "fairness"]
+series:
+  name: "AI Ethics & Responsibility"
+  part: 3
+  total: 4
+  previous: "ai-ethics-privacy-consent-and-data-rights"
 description: "Learn about bias and fairness in ai systems"
 estimated_time: "4 min read"
 image: "/assets/images/guides/bias-and-fairness-in-ai-systems.jpg"

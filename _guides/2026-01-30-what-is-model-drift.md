@@ -4,6 +4,10 @@ title: "What is Model Drift?"
 date: 2026-01-30
 difficulty: intermediate
 tags: ["model-drift", "mlops", "monitoring"]
+series:
+  name: "AI in Production (MLOps Basics)"
+  part: 2
+  total: 4
 description: "Learn about what is model drift?"
 estimated_time: "3 min read"
 image: "/assets/images/guides/what-is-model-drift.jpg"

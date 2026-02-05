@@ -4,10 +4,6 @@ title: "Understanding Transformer Architecture"
 date: 2026-01-22
 difficulty: intermediate
 tags: ["transformers", "architecture", "deep-learning"]
-series:
-  name: "Understanding Transformers"
-  part: 2
-  total: 4  next: "understanding-attention-mechanisms"
 description: "Learn about understanding transformer architecture"
 estimated_time: "15 min read"
 image: "/assets/images/guides/understanding-transformer-architecture.jpg"

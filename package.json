@@ -9,7 +9,9 @@
     "add-topic": "node scripts/add-topic.js",
     "show-tags": "node scripts/add-topic.js --tags",
     "add-images": "node scripts/add-images-retroactive.js",
-    "fix-formatting": "node scripts/fix-guide-formatting.js"
+    "fix-formatting": "node scripts/fix-guide-formatting.js",
+    "review": "node scripts/review-guides.js",
+    "review:fix": "node scripts/review-guides.js --fix"
   },
   "keywords": [
     "ai",

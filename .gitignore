@@ -25,3 +25,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Markdowns
+guide-review-report.json

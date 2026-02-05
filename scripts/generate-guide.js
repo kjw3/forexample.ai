@@ -4,7 +4,7 @@ const path = require('path');
 
 // NVIDIA API Configuration
 const NVIDIA_API_BASE = 'https://integrate.api.nvidia.com/v1';
-const NVIDIA_MODEL = 'meta/llama-3.1-70b-instruct'; // Free tier model
+const NVIDIA_MODEL = 'moonshotai/kimi-k2.5'; // Kimi K2.5 - 1T MoE model with 256k context
 
 // File paths
 const TOPICS_FILE = path.join(__dirname, '..', 'topics.json');
@@ -300,7 +300,10 @@ Be friendly, be human, be helpful!`;
         ],
         temperature: 0.7,
         top_p: 1,
-        max_tokens: 4096
+        max_tokens: 8192,  // Increased for Kimi K2.5's more detailed responses
+        stream: false,
+        // Use Instant Mode for direct responses without reasoning traces
+        mode: 'instant'
       },
       {
         headers: {

@@ -13,7 +13,8 @@
     "fix-series": "node scripts/fix-series-metadata.js",
     "fix-links": "node scripts/fix-broken-links.js",
     "review": "node scripts/review-guides.js",
-    "review:fix": "node scripts/review-guides.js --fix"
+    "review:fix": "node scripts/review-guides.js --fix",
+    "validate": "node scripts/validate-json.js"
   },
   "keywords": [
     "ai",

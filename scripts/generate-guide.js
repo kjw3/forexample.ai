@@ -399,7 +399,7 @@ function generateImagePrompt(topic) {
 }
 
 // Helper function to try generating image with a specific FLUX model
-async function tryGenerateWithModel(prompt, modelUrl, modelName, steps, maxRetries = 3) {
+async function tryGenerateWithModel(prompt, modelUrl, modelName, steps, maxRetries = 3, timeoutMs = 300000) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       console.log(`Attempt ${attempt}/${maxRetries}: Sending prompt to ${modelName}...`);
@@ -419,7 +419,7 @@ async function tryGenerateWithModel(prompt, modelUrl, modelName, steps, maxRetri
             'Content-Type': 'application/json',
             'Accept': 'application/json'
           },
-          timeout: 300000 // 5 minute timeout
+          timeout: timeoutMs
         }
       );
 
@@ -433,17 +433,34 @@ async function tryGenerateWithModel(prompt, modelUrl, modelName, steps, maxRetri
         throw new Error(`Image generation failed: ${artifact.finishReason}`);
       }
 
+      console.log(`✓ Success! Image generated with ${modelName}`);
       return artifact.base64;
 
     } catch (error) {
-      console.error(`✗ Attempt ${attempt} failed:`, error.message);
+      const isTimeout = error.code === 'ECONNABORTED' || error.message.includes('timeout');
+      const isServerError = error.response && error.response.status >= 500;
+
+      console.error(`✗ Attempt ${attempt} failed: ${error.message}`);
+
       if (error.response) {
-        console.error('API Response:', JSON.stringify(error.response.data) || error.response.status);
+        console.error(`   HTTP Status: ${error.response.status}`);
+        if (error.response.data) {
+          console.error(`   API Response:`, JSON.stringify(error.response.data));
+        }
       }
 
+      if (isTimeout) {
+        console.error(`   (Request timed out after ${timeoutMs/1000}s - API may be overloaded)`);
+      } else if (isServerError) {
+        console.error(`   (Server error - NVIDIA API may be experiencing issues)`);
+      }
+
+      // Don't retry immediately on server errors - wait longer
       if (attempt < maxRetries) {
-        const waitTime = Math.pow(2, attempt) * 10000; // 20s, 40s, 80s
-        console.log(`Waiting ${waitTime/1000}s before retry...`);
+        const waitTime = isServerError ?
+          Math.pow(2, attempt) * 15000 : // 30s, 60s for server errors
+          Math.pow(2, attempt) * 10000;   // 20s, 40s for other errors
+        console.log(`   Waiting ${waitTime/1000}s before retry...`);
         await new Promise(resolve => setTimeout(resolve, waitTime));
       }
     }
@@ -484,7 +501,8 @@ async function fetchAndSaveImage(topic) {
     'https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-schnell',
     'FLUX.1-schnell',
     4,
-    3
+    3,
+    300000 // 5 minute timeout
   );
 
   if (imageBase64) {
@@ -492,12 +510,14 @@ async function fetchAndSaveImage(topic) {
   } else {
     // Fallback to FLUX.1-dev (slower but more reliable)
     console.log('\n🔄 FLUX.1-schnell failed, falling back to FLUX.1-dev (slower but more reliable)...');
+    console.log('   Note: FLUX.1-dev uses 50 steps vs 4 for schnell, so it takes longer');
     imageBase64 = await tryGenerateWithModel(
       prompt,
       'https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-dev',
       'FLUX.1-dev',
       50,
-      2
+      2,
+      600000 // 10 minute timeout for dev model (it's slower)
     );
 
     if (imageBase64) {
@@ -507,7 +527,11 @@ async function fetchAndSaveImage(topic) {
 
   // If both models failed
   if (!imageBase64) {
-    console.error('⚠️  All attempts with both FLUX models failed. Guide will be created without image.');
+    console.error('\n⚠️  All attempts with both FLUX models failed.');
+    console.error('    This is likely a temporary NVIDIA API issue.');
+    console.error('    Guide will be created without image - you can generate the image later.');
+    console.error('    To retry image generation for this guide, run:');
+    console.error(`    node scripts/add-images-retroactive.js`);
     return null;
   }
 

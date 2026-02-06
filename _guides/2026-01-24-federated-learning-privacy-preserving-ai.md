@@ -12,6 +12,7 @@ image_credit_url: "https://build.nvidia.com/black-forest-labs/flux_1-schnell"
 ---
 
 **Federated Learning: Privacy-Preserving AI** 🤫  
+====================================================================
 **Difficulty:** advanced  
 
 ## Introduction  

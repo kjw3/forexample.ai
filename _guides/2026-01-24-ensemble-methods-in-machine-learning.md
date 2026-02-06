@@ -12,6 +12,7 @@ image_credit_url: "https://build.nvidia.com/black-forest-labs/flux_1-schnell"
 ---
 
 **Title:** Ensemble Methods in Machine Learning  
+====================================================================
 **Difficulty:** intermediate
 
 **Ensemble Methods in Machine Learning: The Power of Collaboration** 🤝

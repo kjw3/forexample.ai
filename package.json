@@ -16,7 +16,8 @@
     "review": "node scripts/review-guides.js",
     "review:fix": "node scripts/review-guides.js --fix",
     "validate": "node scripts/validate-json.js",
-    "validate:series": "node scripts/validate-series.js"
+    "validate:series": "node scripts/validate-series.js",
+    "test:series": "node scripts/test-series-auto-update.js"
   },
   "keywords": [
     "ai",

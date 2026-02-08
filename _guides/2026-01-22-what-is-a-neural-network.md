@@ -8,6 +8,7 @@ series:
   name: "Neural Networks Fundamentals"
   part: 1
   total: 3
+  next: "how-neural-networks-learn-backpropagation-explained"
 description: "Learn about what is a neural network?"
 estimated_time: "12 min read"
 image: "/assets/images/guides/what-is-a-neural-network.jpg"

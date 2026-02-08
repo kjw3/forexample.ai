@@ -7,6 +7,7 @@ tags: ["validation-pipeline", "mlops", "automation"]
 series:
   name: "AI in Production (MLOps Basics)"
   part: 4
+  previous: "what-is-model-drift"
   total: 4
 description: "Learn about what is model validation pipeline?"
 estimated_time: "4 min read"

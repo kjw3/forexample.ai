@@ -9,6 +9,7 @@ series:
   part: 3
   total: 4
   previous: "gradient-descent-optimization-algorithms"
+  next: "overfitting-and-underfitting-in-machine-learning"
 description: "A deep dive into understanding model parameters and hyperparameters"
 estimated_time: "3 min read"
 image: "/assets/images/guides/understanding-model-parameters-and-hyperparameters.jpg"

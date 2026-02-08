@@ -12,6 +12,7 @@
     "fix-formatting": "node scripts/fix-guide-formatting.js",
     "fix-series": "node scripts/fix-series-metadata.js",
     "fix-links": "node scripts/fix-broken-links.js",
+    "fix-series-nav": "node scripts/fix-series-navigation.js",
     "review": "node scripts/review-guides.js",
     "review:fix": "node scripts/review-guides.js --fix",
     "validate": "node scripts/validate-json.js",

@@ -631,6 +631,82 @@ series:
   return filename;
 }
 
+// Update series navigation in adjacent guides
+function updateSeriesNavigation(newTopic) {
+  if (!newTopic.series) {
+    return;
+  }
+
+  console.log('\nUpdating series navigation in adjacent guides...');
+
+  const newSlug = titleToSlug(newTopic.title);
+
+  // Update previous guide's "next" link
+  if (newTopic.series.previous) {
+    const prevSlug = newTopic.series.previous;
+    const prevFiles = fs.readdirSync(GUIDES_DIR).filter(f => f.includes(prevSlug));
+
+    if (prevFiles.length > 0) {
+      const prevFile = path.join(GUIDES_DIR, prevFiles[0]);
+      let content = fs.readFileSync(prevFile, 'utf-8');
+
+      // Check if the previous guide already has a next link
+      const hasNextLink = /next:\s*"[^"]+"/m.test(content);
+
+      if (!hasNextLink) {
+        // Add next link after the previous line, or after total line if no previous
+        const hasPreviousLine = /previous:\s*"[^"]+"/m.test(content);
+
+        if (hasPreviousLine) {
+          // Add after previous line
+          content = content.replace(
+            /(previous:\s*"[^"]+")\n/m,
+            `$1\n  next: "${newSlug}"\n`
+          );
+        } else {
+          // Add after total line
+          content = content.replace(
+            /(total:\s*\d+)\n/m,
+            `$1\n  next: "${newSlug}"\n`
+          );
+        }
+
+        fs.writeFileSync(prevFile, content);
+        console.log(`  ✓ Updated ${prevFiles[0]} with next link to ${newSlug}`);
+      } else {
+        console.log(`  ✓ ${prevFiles[0]} already has next link`);
+      }
+    }
+  }
+
+  // Update next guide's "previous" link
+  if (newTopic.series.next) {
+    const nextSlug = newTopic.series.next;
+    const nextFiles = fs.readdirSync(GUIDES_DIR).filter(f => f.includes(nextSlug));
+
+    if (nextFiles.length > 0) {
+      const nextFile = path.join(GUIDES_DIR, nextFiles[0]);
+      let content = fs.readFileSync(nextFile, 'utf-8');
+
+      // Check if the next guide already has a previous link
+      const hasPreviousLink = /previous:\s*"[^"]+"/m.test(content);
+
+      if (!hasPreviousLink) {
+        // Add previous link after part line
+        content = content.replace(
+          /(part:\s*\d+)\n/m,
+          `$1\n  previous: "${newSlug}"\n`
+        );
+
+        fs.writeFileSync(nextFile, content);
+        console.log(`  ✓ Updated ${nextFiles[0]} with previous link to ${newSlug}`);
+      } else {
+        console.log(`  ✓ ${nextFiles[0]} already has previous link`);
+      }
+    }
+  }
+}
+
 // Main function
 async function main() {
   try {
@@ -663,6 +739,9 @@ async function main() {
 
     // Create guide file
     const filename = await createGuideFile(topic, content, imageData);
+
+    // Update series navigation in adjacent guides
+    updateSeriesNavigation(topic);
 
     // Update generated topics
     if (!generatedTopics.includes(topic.title)) {

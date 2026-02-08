@@ -46,6 +46,11 @@ jobs:
         run: |
           git diff --exit-code _guides/ generated-topics.json assets/images/guides/ || echo "changes=true" >> $GITHUB_OUTPUT
 
+      - name: Validate series navigation (informational)
+        if: steps.git-check.outputs.changes == 'true'
+        continue-on-error: true
+        run: npm run validate:series
+
       - name: Commit and push new guide
         if: steps.git-check.outputs.changes == 'true'
         run: |

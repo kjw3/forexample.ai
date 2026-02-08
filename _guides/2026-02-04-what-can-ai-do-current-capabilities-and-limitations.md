@@ -14,6 +14,7 @@ series:
   part: 3
   total: 4
   previous: "the-difference-between-ai-machine-learning-and-deep-learning"
+  next: "ai-in-your-daily-life-examples-you-might-not-notice"
 ---
 
  **What Can AI Do? Current Superpowers and Kryptonite** 🚨

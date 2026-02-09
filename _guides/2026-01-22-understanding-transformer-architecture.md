@@ -6,8 +6,8 @@ difficulty: intermediate
 tags: ["transformers", "architecture", "deep-learning"]
 series:
   name: "Understanding Transformers"
-  part: 2
-  total: 4
+  part: 1
+  total: 2
   next: "understanding-attention-mechanisms"
 description: "Learn about understanding transformer architecture"
 estimated_time: "15 min read"

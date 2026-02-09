@@ -6,8 +6,8 @@ difficulty: intermediate
 tags: ["attention", "transformers", "mechanisms"]
 series:
   name: "Understanding Transformers"
-  part: 3
-  total: 4
+  part: 2
+  total: 2
   previous: "understanding-transformer-architecture"
   next: "the-architecture-of-gpt-models"
 description: "Learn about understanding attention mechanisms"

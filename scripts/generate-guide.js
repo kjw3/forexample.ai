@@ -110,14 +110,9 @@ function selectNextTopic(topics, generatedTopics) {
     return selected;
   }
 
-  // PRIORITY 4: Any series topic (in case previous parts aren't done yet)
-  const anySeriesTopics = unusedTopics.filter(t => t.series);
-
-  if (anySeriesTopics.length > 0) {
-    const selected = anySeriesTopics[Math.floor(Math.random() * anySeriesTopics.length)];
-    console.log(`📝 Generating series topic: "${selected.series.name}" (Part ${selected.series.part}/${selected.series.total})`);
-    return selected;
-  }
+  // REMOVED PRIORITY 4: Do NOT allow generating series parts out of order
+  // Series topics can ONLY be generated if they are part 1 OR if the previous part exists
+  // This ensures series are always authored sequentially
 
   // FALLBACK: Random standalone topic
   const selected = unusedTopics[Math.floor(Math.random() * unusedTopics.length)];

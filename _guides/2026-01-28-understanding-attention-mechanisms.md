@@ -9,6 +9,7 @@ series:
   part: 3
   total: 4
   previous: "understanding-transformer-architecture"
+  next: "the-architecture-of-gpt-models"
 description: "Learn about understanding attention mechanisms"
 estimated_time: "4 min read"
 image: "/assets/images/guides/understanding-attention-mechanisms.jpg"

@@ -7,7 +7,7 @@ tags: ["attention", "transformers", "mechanisms"]
 series:
   name: "Understanding Transformers"
   part: 2
-  total: 2
+  total: 3
   previous: "understanding-transformer-architecture"
   next: "the-architecture-of-gpt-models"
 description: "Learn about understanding attention mechanisms"

@@ -9,6 +9,7 @@ series:
   part: 3
   total: 4
   previous: "ai-ethics-privacy-consent-and-data-rights"
+  next: "ai-safety-and-alignment"
 description: "Learn about bias and fairness in ai systems"
 estimated_time: "4 min read"
 image: "/assets/images/guides/bias-and-fairness-in-ai-systems.jpg"

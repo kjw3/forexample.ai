@@ -161,25 +161,38 @@
     }
 }
 
-/* Desktop Layout - Fixed Left Sidebar */
+/* Desktop Layout - Centered Container with Sidebar */
 @media (min-width: 1024px) {
-    .guide-sidebar-fixed {
-        position: fixed;
-        left: 0;
-        top: 500px; /* Position far down to start at guide content */
-        width: 500px; /* Wider TOC */
-        padding: 2rem 1.5rem;
-        z-index: 100;
-        transition: width 0.3s ease, left 0.3s ease;
-        /* No scrolling - show all content */
+    .guide-content.container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
     }
 
-    /* Collapsed state - narrow with arrow icon */
+    .guide-content-wrapper {
+        display: flex;
+        gap: 3rem;
+        align-items: flex-start;
+        padding-top: 2rem;
+    }
+
+    .guide-sidebar {
+        flex: 0 0 320px;
+        position: sticky;
+        top: 120px;
+        align-self: flex-start;
+    }
+
+    .guide.toc-collapsed .guide-sidebar {
+        flex: 0 0 48px;
+    }
+
+    .table-of-contents {
+        transition: all 0.3s ease;
+    }
+
+    /* Collapsed state */
     .table-of-contents.collapsed {
-        width: 48px;
-    }
-
-    .guide.toc-collapsed .guide-sidebar-fixed {
         width: 48px;
     }
 
@@ -193,27 +206,10 @@
         padding: 0.5rem;
     }
 
-    /* Smooth transitions for layout changes */
     .guide-main-content {
-        transition: margin-left 0.3s ease, width 0.3s ease;
-    }
-
-    .guide-content-wrapper {
-        padding-top: 2rem;
-    }
-
-    .guide-main-content {
-        margin-left: 520px; /* Space for wider sidebar */
-        margin-right: auto;
-        max-width: 800px; /* Optimal reading width */
-        width: calc(100% - 540px);
-        padding: 0 2rem;
-    }
-
-    /* Adjust content when TOC is collapsed */
-    .guide.toc-collapsed .guide-main-content {
-        margin-left: 68px;
-        width: calc(100% - 88px);
+        flex: 1;
+        max-width: 800px;
+        min-width: 0;
     }
 
     /* Ensure no icons on individual TOC links */
@@ -225,12 +221,6 @@
 
     .toc-list li::marker {
         content: none;
-    }
-
-    /* Center content better */
-    .guide-content.container {
-        max-width: 1400px;
-        margin: 0 auto;
     }
 
     .table-of-contents {
@@ -253,10 +243,11 @@
     }
 
     .toc-title {
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #6b7280;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: none;
+        letter-spacing: normal;
+        color: #1f2937;
     }
 
     /* Collapsed state - show arrow icon */
@@ -264,6 +255,12 @@
         width: 24px;
         height: 24px;
         color: #3b82f6;
+    }
+
+    .toc-list li {
+        font-size: 0.9375rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
     }
 
     .toc-list li {

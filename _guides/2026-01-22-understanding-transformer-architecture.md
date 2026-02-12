@@ -7,6 +7,7 @@ tags: ["transformers", "architecture", "deep-learning"]
 series:
   name: "Understanding Transformers"
   part: 1
+  previous: "how-chatgpt-works-a-simple-explanation"
   total: 3
   next: "understanding-attention-mechanisms"
 description: "Learn about understanding transformer architecture"

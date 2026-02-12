@@ -46,6 +46,11 @@
     font-weight: 500;
 }
 
+.breadcrumb-series {
+    color: #3b82f6;
+    font-weight: 500;
+}
+
 /* Responsive breadcrumbs */
 @media (max-width: 640px) {
     .breadcrumbs {

@@ -107,18 +107,25 @@
       "position": 1,
       "name": "Home",
       "item": "{{ site.url }}"
-    },
-    {
+    }
+    {%- if page.series -%}
+    ,{
       "@type": "ListItem",
       "position": 2,
-      "name": "Guides",
-      "item": "{{ site.url }}/guides/"
+      "name": "{{ page.series.name }}"
     },
     {
       "@type": "ListItem",
       "position": 3,
+      "name": "Part {{ page.series.part }}: {{ page.title }}"
+    }
+    {%- else -%}
+    ,{
+      "@type": "ListItem",
+      "position": 2,
       "name": {{ page.title | jsonify }}
     }
+    {%- endif -%}
   ]
 }
 </script>

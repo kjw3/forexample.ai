@@ -1,0 +1,45 @@
+{% if page.toc != false %}
+<!-- Auto-generated Table of Contents -->
+{% assign headings = content | split: '<h2' %}
+{% assign toc_items = "" | split: "" %}
+
+{% for heading in headings offset: 1 %}
+  {% assign heading_parts = heading | split: '</h2>' %}
+  {% assign heading_content = heading_parts[0] | split: '>' | last | strip_html %}
+  {% assign heading_id = heading_content | slugify %}
+  {% assign toc_items = toc_items | push: heading_content %}
+{% endfor %}
+
+{% if toc_items.size > 0 %}
+<nav class="table-of-contents" aria-labelledby="toc-heading">
+  <h2 id="toc-heading" class="toc-title">Table of Contents</h2>
+  <ol class="toc-list">
+    {% for heading in headings offset: 1 %}
+      {% assign heading_parts = heading | split: '</h2>' %}
+      {% assign heading_content = heading_parts[0] | split: '>' | last | strip_html %}
+      {% assign heading_id = heading_content | slugify %}
+      <li>
+        <a href="#{{ heading_id }}" class="toc-link">{{ heading_content }}</a>
+      </li>
+    {% endfor %}
+  </ol>
+</nav>
+
+<!-- Inject IDs into actual headings for anchor links -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const headings = document.querySelectorAll('.guide-content h2');
+    headings.forEach(function(heading) {
+      if (!heading.id) {
+        const id = heading.textContent
+          .toLowerCase()
+          .replace(/[^\w\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        heading.id = id;
+      }
+    });
+  });
+</script>
+{% endif %}
+{% endif %}

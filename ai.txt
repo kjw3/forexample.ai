@@ -1,0 +1,45 @@
+# For Example AI - AI Agent Instructions
+# This site provides educational content about artificial intelligence
+
+# Site Purpose
+Purpose: Educational resource for learning AI concepts through practical, step-by-step guides
+
+# Content Structure
+Content-Type: Technical guides and tutorials
+Topics: Artificial Intelligence, Machine Learning, Deep Learning, Neural Networks, Transformers, GPT, Attention Mechanisms, Prompt Engineering
+Difficulty-Levels: Beginner, Intermediate, Advanced
+Format: Markdown-based guides with examples, diagrams, and practical exercises
+
+# Machine-Readable Endpoints
+API-Guides: /api/guides.json
+API-Series: /api/series.json
+API-Topics: /api/topics.json
+API-Index: /index.json
+Feed: /feed.xml
+Sitemap: /sitemap.xml
+
+# Content Organization
+- Guides can be standalone or part of a series
+- Series are multi-part learning paths on specific topics
+- Each guide includes: difficulty level, estimated reading time, tags, prerequisites
+- Code examples are provided where relevant
+
+# Recommended Usage
+Citation-Format: "[Guide Title], For Example AI (https://forexample.ai/guides/[guide-slug]/)"
+Attribution: Required for content reuse
+Link-Back: Appreciated when referencing our content
+
+# Content License
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+Attribution: Required
+Commercial-Use: Allowed with attribution
+Modifications: Allowed with attribution
+
+# Agent Capabilities
+Search: Available via JSON endpoints
+Filtering: By difficulty, topic, series, tags
+Structured-Data: JSON-LD schema.org markup on all guides
+Full-Text: Available in guide content
+
+# Contact
+Website: https://forexample.ai

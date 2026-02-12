@@ -3,6 +3,11 @@ layout: default
 ---
 
 <article class="guide">
+    <!-- Breadcrumb Navigation -->
+    <div class="container">
+        {% include breadcrumbs.html %}
+    </div>
+
     <header class="guide-header">
         <div class="container">
             <h1 class="guide-title">{{ page.title }}</h1>
@@ -32,6 +37,15 @@ layout: default
     {% endif %}
 
     <div class="guide-content container">
+        <!-- Prerequisites -->
+        {% include prerequisites.html %}
+
+        <!-- Learning Objectives -->
+        {% include learning-objectives.html %}
+
+        <!-- Table of Contents -->
+        {% include table-of-contents.html %}
+
         {% if page.series %}
         <nav class="series-navigation">
             <div class="series-header">
@@ -143,3 +157,6 @@ layout: default
         <a href="{{ '/' | relative_url }}" class="back-link">← Back to All Guides</a>
     </footer>
 </article>
+
+<!-- Reading Progress Bar -->
+{% include reading-progress.html %}

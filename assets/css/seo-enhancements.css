@@ -177,7 +177,8 @@
     }
 
     .guide-sidebar {
-        flex: 0 0 320px;
+        flex: 0 0 500px;
+        min-width: 500px;
         position: sticky;
         top: 120px;
         align-self: flex-start;
@@ -185,6 +186,7 @@
 
     .guide.toc-collapsed .guide-sidebar {
         flex: 0 0 48px;
+        min-width: 48px;
     }
 
     .table-of-contents {

@@ -108,15 +108,10 @@
     text-decoration: underline;
 }
 
-/* Sticky TOC on larger screens */
-@media (min-width: 1280px) {
+/* Desktop TOC - keep at top, just wider */
+@media (min-width: 1024px) {
     .table-of-contents {
-        position: sticky;
-        top: 2rem;
-        max-width: 300px;
-        float: right;
-        margin-left: 2rem;
-        margin-top: 0;
+        max-width: 600px;
     }
 }
 

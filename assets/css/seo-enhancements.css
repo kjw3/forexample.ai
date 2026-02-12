@@ -123,13 +123,15 @@
 }
 
 .toc-list {
-    list-style: none;
+    list-style: none !important;
     padding: 0;
     margin: 0;
 }
 
 .toc-list li {
     margin-bottom: 0.5rem;
+    list-style: none !important;
+    list-style-type: none !important;
 }
 
 .toc-link {
@@ -164,8 +166,8 @@
     .guide-sidebar-fixed {
         position: fixed;
         left: 0;
-        top: 300px; /* Position much lower to start at guide content */
-        width: 420px; /* Even wider TOC */
+        top: 500px; /* Position far down to start at guide content */
+        width: 500px; /* Wider TOC */
         padding: 2rem 1.5rem;
         z-index: 100;
         transition: width 0.3s ease, left 0.3s ease;
@@ -201,10 +203,10 @@
     }
 
     .guide-main-content {
-        margin-left: 440px; /* Space for wider sidebar */
+        margin-left: 520px; /* Space for wider sidebar */
         margin-right: auto;
         max-width: 800px; /* Optimal reading width */
-        width: calc(100% - 460px);
+        width: calc(100% - 540px);
         padding: 0 2rem;
     }
 
@@ -212,6 +214,17 @@
     .guide.toc-collapsed .guide-main-content {
         margin-left: 68px;
         width: calc(100% - 88px);
+    }
+
+    /* Ensure no icons on individual TOC links */
+    .toc-link::before,
+    .toc-link::after {
+        content: none !important;
+        display: none !important;
+    }
+
+    .toc-list li::marker {
+        content: none;
     }
 
     /* Center content better */

@@ -31,26 +31,37 @@ function parseFrontMatter(content) {
 
 // Generate AI image prompt from topic
 function generateImagePrompt(title, tags) {
-  // Avoid mentioning title to prevent text generation
+  // Create a concise prompt for FLUX - avoid mentioning title to prevent text generation
+  // Put "no text" instruction at the BEGINNING for maximum emphasis
   const keywords = tags.slice(0, 3).join(', ');
-  return `Abstract tech illustration with ${keywords} theme, clean modern design, vibrant gradients with blue purple teal colors, geometric shapes, flowing lines, futuristic tech motifs, educational style, high quality digital art. IMPORTANT: absolutely no text, no words, no letters, no typography, no labels, pure visual abstract design only`;
+  return {
+    prompt: `Pure visual abstract design only, NO TEXT OR LETTERS. Abstract tech illustration with ${keywords} theme, clean modern design, vibrant gradients with blue purple teal colors, geometric shapes, flowing lines, futuristic tech motifs, educational style, high quality digital art, textless composition`,
+    negative_prompt: `text, words, letters, typography, labels, title, caption, watermark, signature, writing, characters, alphabet, numbers, symbols, logo, heading, font, readable text, any text whatsoever`
+  };
 }
 
 // Helper function to try generating image with a specific FLUX model
-async function tryGenerateWithModel(prompt, modelUrl, modelName, steps, maxRetries = 3) {
+async function tryGenerateWithModel(promptData, modelUrl, modelName, steps, maxRetries = 3) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       console.log(`  Attempt ${attempt}/${maxRetries}: Sending prompt to ${modelName}...`);
 
+      const requestBody = {
+        prompt: promptData.prompt,
+        width: 1024,
+        height: 1024,
+        seed: Math.floor(Math.random() * 1000000),
+        steps: steps
+      };
+
+      // Add negative prompt if provided
+      if (promptData.negative_prompt) {
+        requestBody.negative_prompt = promptData.negative_prompt;
+      }
+
       const response = await axios.post(
         modelUrl,
-        {
-          prompt: prompt,
-          width: 1024,
-          height: 1024,
-          seed: Math.floor(Math.random() * 1000000),
-          steps: steps
-        },
+        requestBody,
         {
           headers: {
             'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,

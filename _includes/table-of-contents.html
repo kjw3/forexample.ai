@@ -6,6 +6,7 @@
 {% for heading in headings offset: 1 %}
   {% assign heading_parts = heading | split: '</h2>' %}
   {% assign heading_content = heading_parts[0] | split: '>' | last | strip_html | strip %}
+  {% assign heading_id = heading_content | slugify %}
   {% assign toc_items = toc_items | push: heading_content %}
 {% endfor %}
 
@@ -18,40 +19,48 @@
       {% assign heading_content = heading_parts[0] | split: '>' | last | strip_html | strip %}
       {% assign heading_id = heading_content | slugify %}
       <li>
-        <a href="#{{ heading_id }}" class="toc-link">{{ heading_content }}</a>
+        <a href="#{{ heading_id }}" class="toc-link" data-target="{{ heading_id }}">{{ heading_content }}</a>
       </li>
     {% endfor %}
   </ol>
 </nav>
 
-<!-- Inject IDs into actual headings for anchor links using same slugify logic -->
+<!-- Inject IDs into actual headings and setup scroll behavior -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // Get all H2 headings in guide content
     const headings = document.querySelectorAll('.guide-content h2');
-    const toc = {{ toc_items | jsonify }};
 
-    headings.forEach(function(heading, index) {
-      if (!heading.id && toc[index]) {
-        // Use same slugify logic as Jekyll: lowercase, replace non-alphanumeric with dashes
-        const id = toc[index]
+    // Assign IDs to headings using Jekyll's slugify logic
+    headings.forEach(function(heading) {
+      if (!heading.id) {
+        const text = heading.textContent.trim();
+        // Match Jekyll's slugify: lowercase, remove non-alphanumeric except spaces/dashes, replace spaces with dashes
+        const id = text
           .toLowerCase()
           .replace(/[^a-z0-9\s-]/g, '')
           .replace(/\s+/g, '-')
           .replace(/-+/g, '-')
           .replace(/^-+|-+$/g, '');
         heading.id = id;
+        console.log('Assigned ID:', id, 'to heading:', text);
       }
     });
 
-    // Smooth scroll to anchors with offset for fixed elements
+    // Setup smooth scroll with proper offset
     document.querySelectorAll('.toc-link').forEach(function(link) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        const targetId = this.getAttribute('href').substring(1);
+        const targetId = this.getAttribute('data-target');
         const targetElement = document.getElementById(targetId);
+
+        console.log('Clicked link for:', targetId);
+        console.log('Found element:', targetElement);
+
         if (targetElement) {
-          // Calculate offset for fixed elements (progress bar, etc.)
-          const offset = 20; // 20px offset from top
+          // Offset for fixed header - desktop: 100px, mobile: 80px
+          const isMobile = window.innerWidth < 768;
+          const offset = isMobile ? 80 : 100;
           const elementPosition = targetElement.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -60,8 +69,10 @@
             behavior: 'smooth'
           });
 
-          // Update URL without jumping
+          // Update URL
           history.pushState(null, null, '#' + targetId);
+        } else {
+          console.error('Element not found for ID:', targetId);
         }
       });
     });

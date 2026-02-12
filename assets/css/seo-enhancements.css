@@ -108,15 +108,124 @@
     text-decoration: underline;
 }
 
-/* Desktop TOC - keep at top, just wider */
+/* Mobile/Tablet - Hide sidebar, show TOC at top of content */
+@media (max-width: 1023px) {
+    .guide-sidebar {
+        display: none; /* Hide sticky sidebar on mobile */
+    }
+
+    .guide-main-content {
+        width: 100%;
+    }
+
+    /* Show TOC at top on mobile via the include */
+    .table-of-contents {
+        display: block !important;
+    }
+}
+
+/* Desktop Layout - Two Column with Sticky Left Sidebar */
 @media (min-width: 1024px) {
+    .guide-content-wrapper {
+        display: flex;
+        gap: 3rem;
+        align-items: flex-start;
+        padding-top: 2rem;
+    }
+
+    .guide-sidebar {
+        flex: 0 0 280px;
+        position: sticky;
+        top: 100px; /* Account for fixed header + padding */
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        /* Smooth scrollbar */
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 #f1f5f9;
+    }
+
+    .guide-sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .guide-sidebar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 3px;
+    }
+
+    .guide-sidebar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+    }
+
+    .guide-sidebar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    .guide-main-content {
+        flex: 1;
+        min-width: 0; /* Prevent flex item from overflowing */
+        max-width: 800px; /* Optimal reading width */
+    }
+
+    .table-of-contents {
+        margin: 0;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .toc-title {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6b7280;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .toc-list li {
+        font-size: 0.875rem;
+        margin-bottom: 0.375rem;
+        line-height: 1.5;
+    }
+
+    .toc-list li::before {
+        content: counter(toc-counter) ". ";
+        color: #9ca3af;
+        font-weight: 400;
+        font-size: 0.8125rem;
+    }
+
+    .toc-link {
+        display: block;
+        padding: 0.375rem 0;
+        line-height: 1.4;
+    }
+
+    /* Highlight active section */
+    .toc-link.active {
+        color: #2563eb;
+        font-weight: 600;
+        background: #eff6ff;
+        margin: 0 -0.5rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        border-radius: 0.25rem;
+    }
+}
+
+/* Tablet - keep at top */
+@media (min-width: 768px) and (max-width: 1023px) {
     .table-of-contents {
         max-width: 600px;
+        margin: 2rem auto;
     }
 }
 
 /* Mobile TOC */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .table-of-contents {
         padding: 1rem;
         margin: 1.5rem 0;

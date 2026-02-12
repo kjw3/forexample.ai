@@ -37,14 +37,19 @@ layout: default
     {% endif %}
 
     <div class="guide-content container">
-        <!-- Prerequisites -->
-        {% include prerequisites.html %}
+        <div class="guide-content-wrapper">
+            <!-- Left Sidebar (Desktop only) -->
+            <aside class="guide-sidebar">
+                {% include table-of-contents.html %}
+            </aside>
 
-        <!-- Learning Objectives -->
-        {% include learning-objectives.html %}
+            <!-- Main Content -->
+            <div class="guide-main-content">
+                <!-- Prerequisites -->
+                {% include prerequisites.html %}
 
-        <!-- Table of Contents -->
-        {% include table-of-contents.html %}
+                <!-- Learning Objectives -->
+                {% include learning-objectives.html %}
 
         {% if page.series %}
         <nav class="series-navigation">
@@ -151,7 +156,9 @@ layout: default
             </div>
         </nav>
         {% endif %}
-    </div>
+            </div><!-- end guide-main-content -->
+        </div><!-- end guide-content-wrapper -->
+    </div><!-- end guide-content container -->
 
     <footer class="guide-footer container">
         <a href="{{ '/' | relative_url }}" class="back-link">← Back to All Guides</a>

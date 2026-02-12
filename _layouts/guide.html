@@ -36,13 +36,13 @@ layout: default
     </div>
     {% endif %}
 
+    <!-- Left Sidebar (Desktop only) - Outside container for edge positioning -->
+    <aside class="guide-sidebar-fixed">
+        {% include table-of-contents.html %}
+    </aside>
+
     <div class="guide-content container">
         <div class="guide-content-wrapper">
-            <!-- Left Sidebar (Desktop only) -->
-            <aside class="guide-sidebar">
-                {% include table-of-contents.html %}
-            </aside>
-
             <!-- Main Content -->
             <div class="guide-main-content">
                 <!-- Prerequisites -->

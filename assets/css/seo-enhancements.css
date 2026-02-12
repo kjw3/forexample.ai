@@ -70,13 +70,51 @@
     border-radius: 0.5rem;
     padding: 1.5rem;
     margin: 2rem 0;
+    transition: all 0.3s ease;
+}
+
+.toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
 }
 
 .toc-title {
     font-size: 1.125rem;
     font-weight: 600;
     color: #1f2937;
-    margin: 0 0 1rem 0;
+    margin: 0;
+}
+
+.toc-toggle {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toc-toggle:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+.toc-toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.table-of-contents.collapsed .toc-toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.table-of-contents.collapsed .toc-list {
+    display: none;
 }
 
 .toc-list {
@@ -108,71 +146,86 @@
     text-decoration: underline;
 }
 
-/* Mobile/Tablet - Hide sidebar, show TOC at top of content */
+/* Mobile/Tablet - Hide fixed sidebar, show TOC at top of content */
 @media (max-width: 1023px) {
-    .guide-sidebar {
-        display: none; /* Hide sticky sidebar on mobile */
+    .guide-sidebar-fixed {
+        display: none; /* Hide fixed sidebar on mobile */
     }
 
     .guide-main-content {
         width: 100%;
     }
 
-    /* Show TOC at top on mobile via the include */
-    .table-of-contents {
-        display: block !important;
+    /* TOC appears in mobile layout at top */
+    .toc-toggle {
+        display: flex; /* Show collapse button on mobile */
     }
 }
 
-/* Desktop Layout - Two Column with Sticky Left Sidebar */
+/* Desktop Layout - Fixed Left Sidebar */
 @media (min-width: 1024px) {
-    .guide-content-wrapper {
-        display: flex;
-        gap: 3rem;
-        align-items: flex-start;
-        padding-top: 2rem;
-    }
-
-    .guide-sidebar {
-        flex: 0 0 280px;
-        position: sticky;
-        top: 100px; /* Account for fixed header + padding */
+    .guide-sidebar-fixed {
+        position: fixed;
+        left: 0;
+        top: 100px; /* Account for header */
+        width: 280px;
         max-height: calc(100vh - 120px);
         overflow-y: auto;
+        padding: 2rem 1rem;
+        z-index: 100;
         /* Smooth scrollbar */
         scrollbar-width: thin;
-        scrollbar-color: #cbd5e1 #f1f5f9;
+        scrollbar-color: #cbd5e1 transparent;
     }
 
-    .guide-sidebar::-webkit-scrollbar {
+    .guide-sidebar-fixed::-webkit-scrollbar {
         width: 6px;
     }
 
-    .guide-sidebar::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 3px;
+    .guide-sidebar-fixed::-webkit-scrollbar-track {
+        background: transparent;
     }
 
-    .guide-sidebar::-webkit-scrollbar-thumb {
+    .guide-sidebar-fixed::-webkit-scrollbar-thumb {
         background: #cbd5e1;
         border-radius: 3px;
     }
 
-    .guide-sidebar::-webkit-scrollbar-thumb:hover {
+    .guide-sidebar-fixed::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
     }
 
+    /* Collapsed state - narrow width */
+    .table-of-contents.collapsed {
+        width: 48px;
+    }
+
+    .table-of-contents.collapsed .toc-title {
+        display: none;
+    }
+
+    .guide-content-wrapper {
+        padding-top: 2rem;
+    }
+
     .guide-main-content {
-        flex: 1;
-        min-width: 0; /* Prevent flex item from overflowing */
+        margin-left: 300px; /* Space for fixed sidebar */
         max-width: 800px; /* Optimal reading width */
+        width: 100%;
     }
 
     .table-of-contents {
         margin: 0;
         background: #ffffff;
         border: 1px solid #e5e7eb;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+    }
+
+    .toc-header {
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0.75rem;
     }
 
     .toc-title {
@@ -180,9 +233,6 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
         color: #6b7280;
-        border-bottom: 1px solid #e5e7eb;
-        padding-bottom: 0.75rem;
-        margin-bottom: 0.75rem;
     }
 
     .toc-list li {

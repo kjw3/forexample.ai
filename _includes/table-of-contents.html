@@ -11,9 +11,16 @@
 {% endfor %}
 
 {% if toc_items.size > 0 %}
-<nav class="table-of-contents" aria-labelledby="toc-heading">
-  <h2 id="toc-heading" class="toc-title">Table of Contents</h2>
-  <ol class="toc-list">
+<nav class="table-of-contents" aria-labelledby="toc-heading" id="toc-nav">
+  <div class="toc-header">
+    <h2 id="toc-heading" class="toc-title">Table of Contents</h2>
+    <button class="toc-toggle" aria-label="Toggle table of contents" aria-expanded="true">
+      <svg class="toc-toggle-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path class="icon-collapse" d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <ol class="toc-list" id="toc-list">
     {% for heading in headings offset: 1 %}
       {% assign heading_parts = heading | split: '</h2>' %}
       {% assign heading_content = heading_parts[0] | split: '>' | last | strip_html | strip %}
@@ -31,17 +38,15 @@
     // Get all H2 headings in guide content
     const headings = document.querySelectorAll('.guide-content h2');
 
-    // Assign IDs to headings using Jekyll's slugify logic
+    // Assign IDs to headings using EXACT Jekyll slugify logic
     headings.forEach(function(heading) {
       if (!heading.id) {
         const text = heading.textContent.trim();
-        // Match Jekyll's slugify: lowercase, remove non-alphanumeric except spaces/dashes, replace spaces with dashes
+        // Match Jekyll's slugify EXACTLY: replace all non-alphanumeric with single dash
         const id = text
           .toLowerCase()
-          .replace(/[^a-z0-9\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .replace(/-+/g, '-')
-          .replace(/^-+|-+$/g, '');
+          .replace(/[^a-z0-9]+/g, '-')  // Replace sequences of non-alphanumeric with single dash
+          .replace(/^-+|-+$/g, '');      // Remove leading/trailing dashes
         heading.id = id;
         console.log('Assigned ID:', id, 'to heading:', text);
       }
@@ -75,6 +80,24 @@
           console.error('Element not found for ID:', targetId);
         }
       });
+    });
+
+    // Collapse/Expand functionality
+    const tocToggle = document.querySelector('.toc-toggle');
+    const tocList = document.getElementById('toc-list');
+    const tocNav = document.getElementById('toc-nav');
+
+    // Load saved state
+    const tocCollapsed = localStorage.getItem('tocCollapsed') === 'true';
+    if (tocCollapsed) {
+      tocNav.classList.add('collapsed');
+      tocToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    tocToggle.addEventListener('click', function() {
+      const isCollapsed = tocNav.classList.toggle('collapsed');
+      tocToggle.setAttribute('aria-expanded', !isCollapsed);
+      localStorage.setItem('tocCollapsed', isCollapsed);
     });
   });
 </script>

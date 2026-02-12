@@ -85,13 +85,6 @@
     font-weight: 600;
     color: #1f2937;
     margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.toc-icon {
-    flex-shrink: 0;
 }
 
 .toc-toggle {
@@ -133,18 +126,10 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    counter-reset: toc-counter;
 }
 
 .toc-list li {
-    counter-increment: toc-counter;
     margin-bottom: 0.5rem;
-}
-
-.toc-list li::before {
-    content: counter(toc-counter) ". ";
-    color: #6b7280;
-    font-weight: 500;
 }
 
 .toc-link {
@@ -179,51 +164,31 @@
     .guide-sidebar-fixed {
         position: fixed;
         left: 0;
-        top: 180px; /* Position lower to start at content level */
-        width: 360px; /* Wider TOC */
-        max-height: calc(100vh - 200px);
-        overflow-y: auto;
+        top: 300px; /* Position much lower to start at guide content */
+        width: 420px; /* Even wider TOC */
         padding: 2rem 1.5rem;
         z-index: 100;
         transition: width 0.3s ease, left 0.3s ease;
-        /* Smooth scrollbar */
-        scrollbar-width: thin;
-        scrollbar-color: #cbd5e1 transparent;
+        /* No scrolling - show all content */
     }
 
-    .guide-sidebar-fixed::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .guide-sidebar-fixed::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    .guide-sidebar-fixed::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 3px;
-    }
-
-    .guide-sidebar-fixed::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-
-    /* Collapsed state - narrow with visible icon */
+    /* Collapsed state - narrow with arrow icon */
     .table-of-contents.collapsed {
-        width: 60px;
+        width: 48px;
     }
 
     .guide.toc-collapsed .guide-sidebar-fixed {
-        width: 60px;
+        width: 48px;
     }
 
-    .table-of-contents.collapsed .toc-title-text {
+    .table-of-contents.collapsed .toc-title {
         display: none;
     }
 
-    .table-of-contents.collapsed .toc-icon {
-        display: block;
-        margin: 0 auto;
+    .table-of-contents.collapsed .toc-toggle {
+        display: flex;
+        justify-content: center;
+        padding: 0.5rem;
     }
 
     /* Smooth transitions for layout changes */
@@ -236,17 +201,17 @@
     }
 
     .guide-main-content {
-        margin-left: 380px; /* Space for wider sidebar */
+        margin-left: 440px; /* Space for wider sidebar */
         margin-right: auto;
         max-width: 800px; /* Optimal reading width */
-        width: calc(100% - 400px);
+        width: calc(100% - 460px);
         padding: 0 2rem;
     }
 
     /* Adjust content when TOC is collapsed */
     .guide.toc-collapsed .guide-main-content {
-        margin-left: 80px;
-        width: calc(100% - 100px);
+        margin-left: 68px;
+        width: calc(100% - 88px);
     }
 
     /* Center content better */
@@ -281,28 +246,17 @@
         color: #6b7280;
     }
 
-    /* Collapsed state - show icon prominently */
-    .table-of-contents.collapsed .toc-icon {
-        width: 28px;
-        height: 28px;
+    /* Collapsed state - show arrow icon */
+    .table-of-contents.collapsed .toc-toggle-icon {
+        width: 24px;
+        height: 24px;
         color: #3b82f6;
-    }
-
-    .table-of-contents.collapsed .toc-toggle {
-        padding: 0.25rem;
     }
 
     .toc-list li {
         font-size: 0.875rem;
         margin-bottom: 0.375rem;
         line-height: 1.5;
-    }
-
-    .toc-list li::before {
-        content: counter(toc-counter) ". ";
-        color: #9ca3af;
-        font-weight: 400;
-        font-size: 0.8125rem;
     }
 
     .toc-link {

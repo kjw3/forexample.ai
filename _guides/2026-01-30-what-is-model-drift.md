@@ -8,7 +8,8 @@ series:
   name: "AI in Production (MLOps Basics)"
   part: 2
   total: 4
-  next: "what-is-model-validation-pipeline"
+  previous: "what-is-mlops"
+  next: "what-is-model-monitoring-in-production"
 description: "Learn about what is model drift?"
 estimated_time: "3 min read"
 image: "/assets/images/guides/what-is-model-drift.jpg"

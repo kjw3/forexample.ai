@@ -6,9 +6,9 @@ difficulty: intermediate
 tags: ["transformers", "architecture", "deep-learning"]
 series:
   name: "Understanding Transformers"
-  part: 1
+  part: 2
+  total: 4
   previous: "how-chatgpt-works-a-simple-explanation"
-  total: 3
   next: "understanding-attention-mechanisms"
 description: "Learn about understanding transformer architecture"
 estimated_time: "15 min read"

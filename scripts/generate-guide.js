@@ -626,80 +626,132 @@ series:
   return filename;
 }
 
-// Update series navigation in adjacent guides
+// Update series navigation in all guides of the same series
 function updateSeriesNavigation(newTopic) {
   if (!newTopic.series) {
     return;
   }
 
-  console.log('\nUpdating series navigation in adjacent guides...');
+  console.log('\nUpdating series navigation for all guides in the series...');
 
-  const newSlug = titleToSlug(newTopic.title);
+  // Load topics.json to get the authoritative series structure
+  const { topics } = loadTopics();
 
-  // Update previous guide's "next" link
-  if (newTopic.series.previous) {
-    const prevSlug = newTopic.series.previous;
-    const prevFiles = fs.readdirSync(GUIDES_DIR).filter(f => f.includes(prevSlug));
+  // Find all topics in the same series
+  const seriesTopics = topics.filter(t =>
+    t.series && t.series.name === newTopic.series.name
+  ).sort((a, b) => a.series.part - b.series.part);
 
-    if (prevFiles.length > 0) {
-      const prevFile = path.join(GUIDES_DIR, prevFiles[0]);
-      let content = fs.readFileSync(prevFile, 'utf-8');
-
-      // Check if the previous guide already has a next link
-      const hasNextLink = /next:\s*"[^"]+"/m.test(content);
-
-      if (!hasNextLink) {
-        // Add next link after the previous line, or after total line if no previous
-        const hasPreviousLine = /previous:\s*"[^"]+"/m.test(content);
-
-        if (hasPreviousLine) {
-          // Add after previous line
-          content = content.replace(
-            /(previous:\s*"[^"]+")\n/m,
-            `$1\n  next: "${newSlug}"\n`
-          );
-        } else {
-          // Add after total line
-          content = content.replace(
-            /(total:\s*\d+)\n/m,
-            `$1\n  next: "${newSlug}"\n`
-          );
-        }
-
-        fs.writeFileSync(prevFile, content);
-        console.log(`  ✓ Updated ${prevFiles[0]} with next link to ${newSlug}`);
-      } else {
-        console.log(`  ✓ ${prevFiles[0]} already has next link`);
-      }
-    }
+  if (seriesTopics.length === 0) {
+    console.log('  ⚠ No series topics found in topics.json');
+    return;
   }
 
-  // Update next guide's "previous" link
-  if (newTopic.series.next) {
-    const nextSlug = newTopic.series.next;
-    const nextFiles = fs.readdirSync(GUIDES_DIR).filter(f => f.includes(nextSlug));
+  console.log(`  Found ${seriesTopics.length} parts in "${newTopic.series.name}" series`);
 
-    if (nextFiles.length > 0) {
-      const nextFile = path.join(GUIDES_DIR, nextFiles[0]);
-      let content = fs.readFileSync(nextFile, 'utf-8');
+  // Update each guide in the series to match topics.json
+  seriesTopics.forEach((topic, index) => {
+    const slug = titleToSlug(topic.title);
+    const files = fs.readdirSync(GUIDES_DIR).filter(f => f.includes(slug));
 
-      // Check if the next guide already has a previous link
-      const hasPreviousLink = /previous:\s*"[^"]+"/m.test(content);
+    if (files.length === 0) {
+      // Guide hasn't been created yet, skip it
+      return;
+    }
+
+    const filePath = path.join(GUIDES_DIR, files[0]);
+    let content = fs.readFileSync(filePath, 'utf-8');
+    let modified = false;
+
+    // Update part number if different
+    const currentPartMatch = content.match(/part:\s*(\d+)/m);
+    if (currentPartMatch && parseInt(currentPartMatch[1]) !== topic.series.part) {
+      content = content.replace(/part:\s*\d+/m, `part: ${topic.series.part}`);
+      console.log(`  ✓ Updated ${files[0]}: part ${currentPartMatch[1]} → ${topic.series.part}`);
+      modified = true;
+    }
+
+    // Update total if different
+    const currentTotalMatch = content.match(/total:\s*(\d+)/m);
+    if (currentTotalMatch && parseInt(currentTotalMatch[1]) !== topic.series.total) {
+      content = content.replace(/total:\s*\d+/m, `total: ${topic.series.total}`);
+      console.log(`  ✓ Updated ${files[0]}: total ${currentTotalMatch[1]} → ${topic.series.total}`);
+      modified = true;
+    }
+
+    // Update previous link
+    const shouldHavePrevious = index > 0;
+    const hasPreviousLink = /previous:\s*"[^"]+"/m.test(content);
+
+    if (shouldHavePrevious) {
+      const prevSlug = titleToSlug(seriesTopics[index - 1].title);
+      const currentPrevMatch = content.match(/previous:\s*"([^"]+)"/m);
 
       if (!hasPreviousLink) {
         // Add previous link after part line
         content = content.replace(
           /(part:\s*\d+)\n/m,
-          `$1\n  previous: "${newSlug}"\n`
+          `$1\n  total: ${topic.series.total}\n  previous: "${prevSlug}"\n`
         );
-
-        fs.writeFileSync(nextFile, content);
-        console.log(`  ✓ Updated ${nextFiles[0]} with previous link to ${newSlug}`);
-      } else {
-        console.log(`  ✓ ${nextFiles[0]} already has previous link`);
+        // Remove duplicate total if it exists
+        content = content.replace(/total:\s*\d+\n\s*total:\s*\d+/m, (match) => {
+          const totalMatch = match.match(/total:\s*(\d+)/);
+          return `total: ${totalMatch[1]}`;
+        });
+        console.log(`  ✓ Added previous link to ${files[0]}: ${prevSlug}`);
+        modified = true;
+      } else if (currentPrevMatch && currentPrevMatch[1] !== prevSlug) {
+        content = content.replace(/previous:\s*"[^"]+"/m, `previous: "${prevSlug}"`);
+        console.log(`  ✓ Fixed previous link in ${files[0]}: ${prevSlug}`);
+        modified = true;
       }
+    } else if (hasPreviousLink) {
+      // Remove previous link if this is now part 1
+      content = content.replace(/\s*previous:\s*"[^"]+"\n/m, '');
+      console.log(`  ✓ Removed incorrect previous link from ${files[0]}`);
+      modified = true;
     }
-  }
+
+    // Update next link
+    const shouldHaveNext = index < seriesTopics.length - 1;
+    const hasNextLink = /next:\s*"[^"]+"/m.test(content);
+
+    if (shouldHaveNext) {
+      const nextSlug = titleToSlug(seriesTopics[index + 1].title);
+      const currentNextMatch = content.match(/next:\s*"([^"]+)"/m);
+
+      if (!hasNextLink) {
+        // Add next link
+        const hasPreviousLine = /previous:\s*"[^"]+"/m.test(content);
+        if (hasPreviousLine) {
+          content = content.replace(
+            /(previous:\s*"[^"]+")\n/m,
+            `$1\n  next: "${nextSlug}"\n`
+          );
+        } else {
+          content = content.replace(
+            /(total:\s*\d+)\n/m,
+            `$1\n  next: "${nextSlug}"\n`
+          );
+        }
+        console.log(`  ✓ Added next link to ${files[0]}: ${nextSlug}`);
+        modified = true;
+      } else if (currentNextMatch && currentNextMatch[1] !== nextSlug) {
+        content = content.replace(/next:\s*"[^"]+"/m, `next: "${nextSlug}"`);
+        console.log(`  ✓ Fixed next link in ${files[0]}: ${nextSlug}`);
+        modified = true;
+      }
+    } else if (hasNextLink) {
+      // Remove next link if this is now the last part
+      content = content.replace(/\s*next:\s*"[^"]+"\n/m, '');
+      console.log(`  ✓ Removed incorrect next link from ${files[0]}`);
+      modified = true;
+    }
+
+    if (modified) {
+      fs.writeFileSync(filePath, content);
+    }
+  });
 }
 
 // Main function

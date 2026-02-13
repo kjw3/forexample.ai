@@ -411,8 +411,8 @@ async function tryGenerateWithModel(promptData, modelUrl, modelName, steps, maxR
         steps: steps
       };
 
-      // Add negative prompt if provided
-      if (promptData.negative_prompt) {
+      // Only add negative prompt for dev model (schnell doesn't support it)
+      if (promptData.negative_prompt && modelName.includes('dev')) {
         requestBody.negative_prompt = promptData.negative_prompt;
       }
 

@@ -32,10 +32,10 @@ function parseFrontMatter(content) {
 // Generate AI image prompt from topic
 function generateImagePrompt(title, tags) {
   // Create a concise prompt for FLUX - avoid mentioning title to prevent text generation
-  // Put "no text" instruction at the BEGINNING for maximum emphasis
+  // CRITICAL: Multiple emphatic instructions to prevent text generation
   const keywords = tags.slice(0, 3).join(', ');
   return {
-    prompt: `Pure visual abstract design only, NO TEXT OR LETTERS. Abstract tech illustration with ${keywords} theme, clean modern design, vibrant gradients with blue purple teal colors, geometric shapes, flowing lines, futuristic tech motifs, educational style, high quality digital art, textless composition`,
+    prompt: `IMPORTANT: ABSOLUTELY NO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY OF ANY KIND. Pure abstract visual design without any readable text or characters. Create an abstract tech illustration about ${keywords}, using only pure visual elements: vibrant gradients blending blue purple and teal colors, geometric shapes, flowing curved lines, glowing points, futuristic technological motifs, clean modern minimalist style, high quality digital art. Remember: blank empty space for text areas, zero letters, zero words, completely textless image, purely visual abstract composition only`,
     negative_prompt: `text, words, letters, typography, labels, title, caption, watermark, signature, writing, characters, alphabet, numbers, symbols, logo, heading, font, readable text, any text whatsoever`
   };
 }

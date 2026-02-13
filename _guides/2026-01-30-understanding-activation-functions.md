@@ -7,8 +7,8 @@ tags: ["activation-functions", "neural-networks", "components"]
 series:
   name: "Neural Networks Fundamentals"
   part: 3
-  previous: "how-neural-networks-learn-backpropagation-explained"
   total: 3
+  previous: "how-neural-networks-learn-backpropagation-explained"
 description: "Learn about understanding activation functions"
 estimated_time: "4 min read"
 image: "/assets/images/guides/understanding-activation-functions.jpg"

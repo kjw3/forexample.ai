@@ -698,22 +698,32 @@ function updateSeriesNavigation(newTopic) {
       const prevSlug = titleToSlug(seriesTopics[index - 1].title);
       const currentPrevMatch = content.match(/previous:\s*"([^"]+)"/m);
 
-      if (!hasPreviousLink) {
-        // Add previous link after part line
-        content = content.replace(
-          /(part:\s*\d+)\n/m,
-          `$1\n  total: ${topic.series.total}\n  previous: "${prevSlug}"\n`
-        );
-        // Remove duplicate total if it exists
-        content = content.replace(/total:\s*\d+\n\s*total:\s*\d+/m, (match) => {
-          const totalMatch = match.match(/total:\s*(\d+)/);
-          return `total: ${totalMatch[1]}`;
-        });
-        console.log(`  ✓ Added previous link to ${files[0]}: ${prevSlug}`);
-        modified = true;
-      } else if (currentPrevMatch && currentPrevMatch[1] !== prevSlug) {
-        content = content.replace(/previous:\s*"[^"]+"/m, `previous: "${prevSlug}"`);
-        console.log(`  ✓ Fixed previous link in ${files[0]}: ${prevSlug}`);
+      // Check if previous guide actually exists
+      const prevGuideExists = fs.readdirSync(GUIDES_DIR).some(f => f.includes(prevSlug));
+
+      if (prevGuideExists) {
+        if (!hasPreviousLink) {
+          // Add previous link after part line
+          content = content.replace(
+            /(part:\s*\d+)\n/m,
+            `$1\n  total: ${topic.series.total}\n  previous: "${prevSlug}"\n`
+          );
+          // Remove duplicate total if it exists
+          content = content.replace(/total:\s*\d+\n\s*total:\s*\d+/m, (match) => {
+            const totalMatch = match.match(/total:\s*(\d+)/);
+            return `total: ${totalMatch[1]}`;
+          });
+          console.log(`  ✓ Added previous link to ${files[0]}: ${prevSlug}`);
+          modified = true;
+        } else if (currentPrevMatch && currentPrevMatch[1] !== prevSlug) {
+          content = content.replace(/previous:\s*"[^"]+"/m, `previous: "${prevSlug}"`);
+          console.log(`  ✓ Fixed previous link in ${files[0]}: ${prevSlug}`);
+          modified = true;
+        }
+      } else if (hasPreviousLink) {
+        // Remove previous link if target guide doesn't exist
+        content = content.replace(/\s*previous:\s*"[^"]+"\n/m, '');
+        console.log(`  ✓ Removed previous link to non-existent guide from ${files[0]}`);
         modified = true;
       }
     } else if (hasPreviousLink) {
@@ -731,25 +741,35 @@ function updateSeriesNavigation(newTopic) {
       const nextSlug = titleToSlug(seriesTopics[index + 1].title);
       const currentNextMatch = content.match(/next:\s*"([^"]+)"/m);
 
-      if (!hasNextLink) {
-        // Add next link
-        const hasPreviousLine = /previous:\s*"[^"]+"/m.test(content);
-        if (hasPreviousLine) {
-          content = content.replace(
-            /(previous:\s*"[^"]+")\n/m,
-            `$1\n  next: "${nextSlug}"\n`
-          );
-        } else {
-          content = content.replace(
-            /(total:\s*\d+)\n/m,
-            `$1\n  next: "${nextSlug}"\n`
-          );
+      // Check if next guide actually exists
+      const nextGuideExists = fs.readdirSync(GUIDES_DIR).some(f => f.includes(nextSlug));
+
+      if (nextGuideExists) {
+        if (!hasNextLink) {
+          // Add next link
+          const hasPreviousLine = /previous:\s*"[^"]+"/m.test(content);
+          if (hasPreviousLine) {
+            content = content.replace(
+              /(previous:\s*"[^"]+")\n/m,
+              `$1\n  next: "${nextSlug}"\n`
+            );
+          } else {
+            content = content.replace(
+              /(total:\s*\d+)\n/m,
+              `$1\n  next: "${nextSlug}"\n`
+            );
+          }
+          console.log(`  ✓ Added next link to ${files[0]}: ${nextSlug}`);
+          modified = true;
+        } else if (currentNextMatch && currentNextMatch[1] !== nextSlug) {
+          content = content.replace(/next:\s*"[^"]+"/m, `next: "${nextSlug}"`);
+          console.log(`  ✓ Fixed next link in ${files[0]}: ${nextSlug}`);
+          modified = true;
         }
-        console.log(`  ✓ Added next link to ${files[0]}: ${nextSlug}`);
-        modified = true;
-      } else if (currentNextMatch && currentNextMatch[1] !== nextSlug) {
-        content = content.replace(/next:\s*"[^"]+"/m, `next: "${nextSlug}"`);
-        console.log(`  ✓ Fixed next link in ${files[0]}: ${nextSlug}`);
+      } else if (hasNextLink) {
+        // Remove next link if target guide doesn't exist
+        content = content.replace(/\s*next:\s*"[^"]+"\n/m, '');
+        console.log(`  ✓ Removed next link to non-existent guide from ${files[0]}`);
         modified = true;
       }
     } else if (hasNextLink) {

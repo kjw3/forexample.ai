@@ -6,7 +6,12 @@ const GUIDES_DIR = path.join(__dirname, '..', '_guides');
 // Parse a guide file
 function parseGuide(filepath) {
   const content = fs.readFileSync(filepath, 'utf-8');
-  const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+
+  // More forgiving regex that handles:
+  // - Optional whitespace around --- markers
+  // - Files that don't end with newline
+  // - Different line ending styles
+  const frontMatterMatch = content.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n([\s\S]*)$/);
 
   if (!frontMatterMatch) {
     return null;

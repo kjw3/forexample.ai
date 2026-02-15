@@ -51,8 +51,9 @@ function generateImagePrompt(title, tags) {
     .join(', ');
 
   return {
-    prompt: `Abstract technology illustration with ${keywords} theme: vibrant gradient colors blending blue purple and teal, geometric patterns, flowing curved lines, glowing connection points, futuristic digital motifs, clean modern minimalist design, pure visual composition, high quality digital art, smooth gradients and shapes only`,
-    negative_prompt: `text, words, letters, typography, labels, title, caption, watermark, signature, writing, characters, alphabet, numbers, symbols, logo, heading, font, readable text, any text whatsoever`
+    // Generic prompt without topic keywords to avoid content filtering
+    prompt: `Abstract technology background: vibrant gradient colors blending blue purple and teal, geometric patterns, flowing curved lines, glowing points, futuristic digital design, clean modern minimalist style, pure visual composition, high quality digital art, smooth gradients and geometric shapes`,
+    negative_prompt: `text, letters, words, typography, watermark, logo`
   };
 }
 
@@ -70,10 +71,11 @@ async function tryGenerateWithModel(promptData, modelUrl, modelName, steps, maxR
         steps: steps
       };
 
-      // Only add negative prompt for dev model (schnell doesn't support it)
-      if (promptData.negative_prompt && modelName.includes('dev')) {
-        requestBody.negative_prompt = promptData.negative_prompt;
-      }
+      // Note: Negative prompt may not be supported by NVIDIA FLUX API
+      // Commenting out for now to avoid 422 errors
+      // if (promptData.negative_prompt && modelName.includes('dev')) {
+      //   requestBody.negative_prompt = promptData.negative_prompt;
+      // }
 
       const response = await axios.post(
         modelUrl,

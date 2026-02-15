@@ -157,7 +157,7 @@ function processGuide(filename) {
 
   if (!guide) {
     console.log(`⚠️  ${filename}: Could not parse`);
-    return { processed: false };
+    return { processed: false, issues: [] };
   }
 
   let body = guide.body;
@@ -234,6 +234,13 @@ function main() {
 
   for (const file of guideFiles) {
     const result = processGuide(file);
+
+    // Defensive check in case result is malformed
+    if (!result || !result.issues) {
+      console.log(`⚠️  ${file}: Unexpected result format`);
+      results.warnings++;
+      continue;
+    }
 
     if (result.processed) {
       results.fixed++;

@@ -1,0 +1,127 @@
+---
+layout: guide
+title: "What are Convolutional Neural Networks?"
+date: 2026-02-15
+difficulty: intermediate
+tags: ["cnn", "computer-vision", "neural-networks"]
+description: "Learn about what are convolutional neural networks?"
+estimated_time: "8 min read"
+series:
+  name: "Computer Vision Fundamentals"
+  part: 2
+  total: 3
+  previous: "computer-vision-basics-how-machines-see"---
+
+ **What Are Convolutional Neural Networks?** 🚨
+====================================================================
+
+So you've learned how machines "see" images as grids of numbers (if you caught Part 1), and now you're probably wondering: how do we get from raw pixels to a computer confidently declaring *"that's a cat, not a toaster"*? The answer is Convolutional Neural Networks, or CNNs—and honestly, I think they're one of the most elegant inventions in modern AI. They're the reason your phone can identify your friends in photos, why medical imaging AI can spot tumors invisible to the human eye, and yes, how we'll eventually teach computers to recognize faces (spoiler alert: that's Part 3!). Grab your coffee; we're about to unpack the engine powering modern computer vision.
+
+## Prerequisites 📚
+
+No strict prerequisites needed! But if you read **Computer Vision Basics: How Machines See**, you'll have a smoother ride understanding how pixels become numbers. Otherwise, just remember this: computers see images as big grids of RGB values. That's it. That's the foundation we're building on today.
+
+> **💡 Pro Tip:** Don't worry if you skipped Part 1—I’ll weave in the key concepts as we go. This guide works perfectly fine as your entry point into CNNs!
+
+## The Problem: Why Regular Neural Networks Fail at Images 🤔
+
+Remember how in traditional neural networks, every input connects to every neuron? Imagine feeding a modest 1,000×1,000 pixel image into a standard network. That's **3 million input values** (don't forget the three color channels!). Suddenly you need billions of parameters just for the first layer. Your laptop would melt. More importantly, you'd lose something crucial: *spatial relationships*.
+
+When we flatten an image into a long list of numbers, pixels that are neighbors—like the corner of an eye sitting next to an eyebrow—become strangers living far apart in the data. The network can't understand that these pixels belong together spatially.
+
+> **⚠️ Watch Out:** This "flattening" problem is why early computer vision hit a wall. You can't detect a nose if the pixels describing it are scattered across different parts of your input vector!
+
+## The "Aha!" Moment: What Convolution Actually Does 🎯
+
+Here's where CNNs get clever. Instead of looking at the whole image at once, they use **filters** (also called kernels)—small grids of numbers that slide across the image like a magnifying glass. 
+
+Picture yourself standing at a window looking at a landscape. You can't see everything at once; you scan left to right, top to bottom, noticing patterns. That's exactly what convolution does. Each filter specializes in detecting specific features—horizontal lines, vertical edges, color gradients, textures.
+
+When a filter slides over the image, it performs element-wise multiplication and sums the results. If the pattern matches what the filter is "looking for" (say, a diagonal edge), the output number is high. If not, it's low. The result? A **feature map** that highlights where in the image that specific pattern appears.
+
+> **🎯 Key Insight:** The magic isn't in the math—it's in the fact that the *same* filter weights are used across the entire image. This **parameter sharing** means we detect edges in the top-left corner using the exact same logic as edges in the bottom-right. Efficient and beautiful!
+
+## Building the Hierarchy: Layers Upon Layers 🏗️
+
+What truly blows my mind about CNNs is how they build understanding hierarchically. It's almost biological—like how your visual cortex works:
+
+**Layer 1-2:** Detects simple edges and gradients. "There's a line here, a color change there."
+
+**Layer 3-4:** Combines edges into shapes. "Oh, that's a circle" or "That's a corner."
+
+**Layer 5+:** Assembles shapes into objects. "Those circles and lines form an eye" or "That's definitely a car wheel."
+
+Between convolution layers, we typically find:
+- **ReLU (Rectified Linear Unit):** Simply says "if the number is negative, make it zero." It introduces non-linearity, allowing the network to learn complex patterns.
+- **Pooling (usually Max Pooling):** Shrinks the feature maps, keeping only the strongest signals. This makes the network "translation invariant"—meaning it recognizes a cat whether it's in the corner or center of the photo.
+
+> **💡 Pro Tip:** Think of pooling as creating a "summary" of the feature map. If a filter detected an eye in the top-left, pooling ensures the network knows "eye detected somewhere in this region" without caring about exact pixel coordinates.
+
+## Why This Architecture Crushes Computer Vision Tasks 🚀
+
+I love explaining this part because it's where everything clicks. CNNs exploit three key properties of images that traditional networks ignore:
+
+1. **Locality:** Pixels nearby are related (your nose is attached to your face, not floating three feet away)
+2. **Stationarity:** The same patterns appear everywhere (an edge is an edge whether it's in Texas or Tokyo)
+3. **Hierarchical Composition:** Simple features build complex objects (lines → shapes → faces)
+
+This is exactly why CNNs became the backbone of modern computer vision. They don't just process images; they *understand* them structurally.
+
+> **🎯 Key Insight:** By Part 3, when we discuss face recognition, you'll see how these hierarchical features become crucial. Early layers find edges of faces, middle layers locate eyes and noses, and deep layers identify specific facial structures that distinguish your face from mine!
+
+## Real-World Magic: Where CNNs Live Among Us 🌍
+
+Let me get personal for a second. The first time I saw a CNN correctly identify pneumonia from a chest X-ray with 99% accuracy, I got chills. Here's where this technology lives in your daily life:
+
+**Medical Imaging:** Radiologists use CNNs to detect early-stage tumors, diabetic retinopathy, and fractures. These networks spot patterns invisible to human eyes, literally saving lives by catching diseases earlier.
+
+**Self-Driving Cars:** Tesla and Waymo's vehicles don't just "see" the road—they use CNNs to segment every pixel in real-time: *"That's road, that's a pedestrian, that's sky."* The hierarchical features help the car understand that a stop sign is different from a red traffic light, even though both are red octagons/rectangles.
+
+**Your Smartphone Camera:** Portrait mode? That's a CNN doing **semantic segmentation**—pixel-by-pixel classification of what's foreground (your friend) versus background (the messy room you didn't clean). When your phone automatically tags your best friend in photos, that's cascading CNNs running face detection and recognition.
+
+What strikes me about these applications isn't just the accuracy—it's the **democratization of expertise**. A CNN trained on millions of medical images can bring specialist-level diagnostic ability to rural clinics with no radiologists. That's profound.
+
+> **⚠️ Watch Out:** CNNs are powerful but not infallible. They're vulnerable to **adversarial attacks**—tiny, invisible pixel changes that make a CNN think a panda is a gibbon. Always remember there's a confidence score, not absolute truth!
+
+## Try It Yourself: Play with the Filters 🎨
+
+Theory is great, but nothing beats seeing these filters in action:
+
+1. **TensorFlow Playground:** Head to [playground.tensorflow.org](https://playground.tensorflow.org) and switch to the "Spiral" dataset. While not image data, you'll visualize how hidden layers extract increasingly complex boundaries—exactly analogous to how CNN layers work.
+
+2. **Draw Your Own Convolution:** Take graph paper and draw a simple 8×8 smiley face. Now create a 3×3 "edge detector" filter (matrix with -1s on left, 1s on right). Slide it across your drawing manually, calculating the output. You'll physically feel how edge detection works!
+
+3. **CNN Explainer:** Visit [CNN Explainer](https://poloclub.github.io/cnn-explainer/)—an interactive visualization where you can watch exactly how a CNN classifies handwritten digits. Click through each layer and watch features evolve from strokes to loops to numbers.
+
+> **💡 Pro Tip:** When using CNN Explainer, pay attention to the first convolution layer. Notice how some filters activate on vertical lines while others catch horizontal ones? That's the "vocabulary" the network uses to build its understanding.
+
+## Key Takeaways 📝
+
+* **Convolution** uses sliding filters to detect local patterns while preserving spatial relationships
+* **Parameter sharing** makes CNNs efficient—the same filter scans the entire image
+* Networks learn **hierarchically**: edges → textures → shapes → objects
+* **Pooling** provides translation invariance, making the network robust to object position
+* CNNs power everything from medical diagnosis to facial recognition (coming up in Part 3!)
+* Unlike traditional neural networks, CNNs actually *understand* that pixels near each other belong together
+
+## Further Reading 🔗
+
+Ready to go deeper? These resources transformed how I understand CNNs:
+
+- [Stanford CS231n: Convolutional Neural Networks for Visual Recognition](http://cs231n.stanford.edu/) — The legendary Stanford course that taught a generation of AI engineers. Lecture notes and videos are completely free and incredibly thorough.
+
+- [Distill.pub: Feature Visualization](https://distill.pub/2017/feature-visualization/) — A beautiful, interactive article showing exactly what different neurons in CNNs "see" at each layer. Prepare to have your mind blown by the visualizations.
+
+- [3Blue1Brown: But what is a neural network?](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi) — While focused on neural networks generally, this video series builds intuition about how layers transform data that directly applies to understanding CNNs.
+
+---
+
+*Next up in our series: We'll take these CNN building blocks and explore the specific architectures that make face recognition possible—including how your phone recognizes you even with glasses, a mask, or that unfortunate haircut you got in 2020. See you in Part 3!*
+
+## Related Guides
+
+Want to learn more? Check out these related guides:
+
+- [Computer Vision Basics: How Machines See](/guides/computer-vision-basics-how-machines-see/)
+- [What is a Neural Network?](/guides/what-is-a-neural-network/)
+- [Understanding Activation Functions](/guides/understanding-activation-functions/)

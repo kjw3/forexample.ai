@@ -51,7 +51,7 @@ function generateImagePrompt(title, tags) {
     .join(', ');
 
   return {
-    prompt: `IMPORTANT: ABSOLUTELY NO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY OF ANY KIND. Pure abstract visual design without any readable text or characters. Create an abstract tech illustration about ${keywords}, using only pure visual elements: vibrant gradients blending blue purple and teal colors, geometric shapes, flowing curved lines, glowing points, futuristic technological motifs, clean modern minimalist style, high quality digital art. Remember: blank empty space for text areas, zero letters, zero words, completely textless image, purely visual abstract composition only`,
+    prompt: `Abstract technology illustration with ${keywords} theme: vibrant gradient colors blending blue purple and teal, geometric patterns, flowing curved lines, glowing connection points, futuristic digital motifs, clean modern minimalist design, pure visual composition, high quality digital art, smooth gradients and shapes only`,
     negative_prompt: `text, words, letters, typography, labels, title, caption, watermark, signature, writing, characters, alphabet, numbers, symbols, logo, heading, font, readable text, any text whatsoever`
   };
 }

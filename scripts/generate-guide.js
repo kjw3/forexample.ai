@@ -610,15 +610,16 @@ image_credit_url: "${imageData.credit_url}"`;
 series:
   name: "${topic.series.name}"
   part: ${topic.series.part}
-  total: ${topic.series.total}`;
+  total: ${topic.series.total}
+`;
 
     if (topic.series.previous) {
-      frontMatter += `
-  previous: "${topic.series.previous}"`;
+      frontMatter += `  previous: "${topic.series.previous}"
+`;
     }
     if (topic.series.next) {
-      frontMatter += `
-  next: "${topic.series.next}"`;
+      frontMatter += `  next: "${topic.series.next}"
+`;
     }
   }
 

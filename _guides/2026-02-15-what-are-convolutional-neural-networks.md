@@ -10,7 +10,8 @@ series:
   name: "Computer Vision Fundamentals"
   part: 2
   total: 3
-  previous: "computer-vision-basics-how-machines-see"---
+  previous: "computer-vision-basics-how-machines-see"
+---
 
  **What Are Convolutional Neural Networks?** 🚨
 ====================================================================

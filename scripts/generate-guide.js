@@ -469,6 +469,15 @@ async function tryGenerateWithModel(promptData, modelUrl, modelName, steps, maxR
         if (error.response.data) {
           console.error(`   API Response:`, JSON.stringify(error.response.data));
         }
+        if (error.response.headers) {
+          console.error(`   Response Headers:`, JSON.stringify(error.response.headers));
+        }
+      }
+
+      // Log request details for debugging
+      if (attempt === maxRetries) {
+        console.error(`   Request URL: ${modelUrl}`);
+        console.error(`   Request Body:`, JSON.stringify(requestBody, null, 2));
       }
 
       if (isTimeout) {

@@ -200,30 +200,55 @@ async function validateLinksInContent(content) {
   return validatedContent;
 }
 
-// Generate guide content using NVIDIA API
-async function generateGuideContent(topic) {
-  // Add series context if this is part of a series
-  let seriesContext = '';
-  if (topic.series) {
-    seriesContext = `
+// Helper function to detect transient errors that should be retried
+function isTransientError(error) {
+  // Check for HTTP status codes indicating transient issues
+  if (error.response) {
+    const status = error.response.status;
+    if (status === 502 || status === 503 || status === 504) {
+      return true;
+    }
+  }
+
+  // Check for network errors
+  if (error.code) {
+    const transientCodes = ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'ENETUNREACH'];
+    if (transientCodes.includes(error.code)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// Generate guide content with retry logic for transient errors
+async function generateGuideContentWithRetry(topic, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`  Text generation attempt ${attempt}/${maxRetries}...`);
+
+      // Add series context if this is part of a series
+      let seriesContext = '';
+      if (topic.series) {
+        seriesContext = `
 SERIES CONTEXT:
 This guide is part ${topic.series.part} of ${topic.series.total} in the "${topic.series.name}" series.`;
 
-    if (topic.series.previous) {
-      seriesContext += `\nPrevious guide: "${topic.series.previous.replace(/-/g, ' ')}"`;
-    }
-    if (topic.series.next) {
-      seriesContext += `\nNext guide: "${topic.series.next.replace(/-/g, ' ')}"`;
-    }
+        if (topic.series.previous) {
+          seriesContext += `\nPrevious guide: "${topic.series.previous.replace(/-/g, ' ')}"`;
+        }
+        if (topic.series.next) {
+          seriesContext += `\nNext guide: "${topic.series.next.replace(/-/g, ' ')}"`;
+        }
 
-    seriesContext += `\n- Assume readers may have completed previous parts if applicable
+        seriesContext += `\n- Assume readers may have completed previous parts if applicable
 - Build on concepts from earlier parts naturally
 - Reference previous parts when helpful but don't require them
 - Make this guide valuable both standalone AND as part of the series
 `;
-  }
+      }
 
-  const prompt = `Create an educational guide about "${topic.title}" for an AI learning website called "For Example AI".
+      const prompt = `Create an educational guide about "${topic.title}" for an AI learning website called "For Example AI".
 ${seriesContext}
 WRITING STYLE & PERSONALITY:
 - Write with personality! Be conversational, enthusiastic, and human
@@ -282,42 +307,66 @@ Example:
 Write in Markdown format. Do NOT include the front matter (YAML) - only the content body.
 Be friendly, be human, be helpful!`;
 
-  try {
-    const response = await axios.post(
-      `${NVIDIA_API_BASE}/chat/completions`,
-      {
-        model: NVIDIA_MODEL,
-        messages: [
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        temperature: 0.7,
-        top_p: 1,
-        max_tokens: 8192,  // Increased for Kimi K2.5's more detailed responses
-        stream: false,
-        // Use Instant Mode for direct responses without reasoning traces
-        mode: 'instant'
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,
-          'Content-Type': 'application/json'
+      const response = await axios.post(
+        `${NVIDIA_API_BASE}/chat/completions`,
+        {
+          model: NVIDIA_MODEL,
+          messages: [
+            {
+              role: 'user',
+              content: prompt
+            }
+          ],
+          temperature: 0.7,
+          top_p: 1,
+          max_tokens: 8192,  // Increased for Kimi K2.5's more detailed responses
+          stream: false,
+          // Use Instant Mode for direct responses without reasoning traces
+          mode: 'instant'
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${process.env.NVIDIA_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          timeout: 180000 // 3 minute timeout (increased from default)
         }
+      );
+
+      const content = response.data.choices[0].message.content;
+
+      // Validate all links in the generated content
+      const validatedContent = await validateLinksInContent(content);
+
+      console.log('  ✓ Text generation successful');
+      return validatedContent;
+
+    } catch (error) {
+      const isTransient = isTransientError(error);
+      const errorMsg = error.response?.data?.message || error.message;
+      const statusCode = error.response?.status || error.code;
+
+      console.error(`  ✗ Attempt ${attempt} failed: ${statusCode} - ${errorMsg}`);
+
+      // If it's a transient error and we have retries left, wait and retry
+      if (isTransient && attempt < maxRetries) {
+        const waitTime = Math.pow(2, attempt) * 15000; // 30s, 60s, 120s
+        console.log(`  Transient error detected. Waiting ${waitTime/1000}s before retry...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      } else {
+        // Non-transient error or out of retries - throw immediately
+        console.error('NVIDIA API Error:', error.response?.data || error.message);
+        throw error;
       }
-    );
-
-    const content = response.data.choices[0].message.content;
-
-    // Validate all links in the generated content
-    const validatedContent = await validateLinksInContent(content);
-
-    return validatedContent;
-  } catch (error) {
-    console.error('NVIDIA API Error:', error.response?.data || error.message);
-    throw error;
+    }
   }
+
+  throw new Error('Text generation failed after all retry attempts');
+}
+
+// Backward compatibility wrapper
+async function generateGuideContent(topic) {
+  return generateGuideContentWithRetry(topic);
 }
 
 // Find related guides based on shared tags

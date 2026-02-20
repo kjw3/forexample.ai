@@ -331,7 +331,10 @@ Be friendly, be human, be helpful!`;
         }
       );
 
-      const content = response.data.choices[0].message.content;
+      let content = response.data.choices[0].message.content;
+
+      // Strip thinking tokens emitted by reasoning models (e.g. Nemotron)
+      content = content.replace(/<think>[\s\S]*?<\/think>\s*/g, '').trimStart();
 
       // Validate all links in the generated content
       const validatedContent = await validateLinksInContent(content);

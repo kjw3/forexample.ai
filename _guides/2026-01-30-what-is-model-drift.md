@@ -8,6 +8,8 @@ series:
   name: "AI in Production (MLOps Basics)"
   part: 2
   total: 4
+  previous: "what-is-mlops"
+  total: 4
   next: "what-is-model-monitoring-in-production"
 description: "Learn about what is model drift?"
 estimated_time: "3 min read"

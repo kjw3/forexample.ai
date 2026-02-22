@@ -13,6 +13,7 @@ series:
   name: "Natural Language Processing Journey"
   part: 1
   total: 3
+  next: "understanding-embeddings-in-ai"
 ---
 **Natural Language Processing: From Text to Understanding** 🚨  
 ====================================================================

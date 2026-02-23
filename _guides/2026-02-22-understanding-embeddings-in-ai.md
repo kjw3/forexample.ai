@@ -14,6 +14,7 @@ series:
   part: 2
   total: 3
   previous: "natural-language-processing-from-text-to-understanding"
+  next: "understanding-tokenization-methods"
 ---
 **Understanding Embeddings in AI: The Secret Sauce of Language Models** 🚨  
 ====================================================================

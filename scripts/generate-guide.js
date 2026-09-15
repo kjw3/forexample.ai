@@ -4,7 +4,7 @@ const path = require('path');
 
 // NVIDIA API Configuration
 const NVIDIA_API_BASE = 'https://integrate.api.nvidia.com/v1';
-const NVIDIA_MODEL = 'nvidia/nemotron-3-ultra-550b-a55b';
+const NVIDIA_MODEL = 'nvidia/nemotron-3.5-lightning-30b-a3b';
 
 // File paths
 const TOPICS_FILE = path.join(__dirname, '..', 'topics.json');

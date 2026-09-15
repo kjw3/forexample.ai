@@ -584,8 +584,8 @@ async function fetchAndSaveImage(topic) {
     'https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.1-schnell',
     'FLUX.1-schnell',
     4,
-    3,
-    300000 // 5 minute timeout
+    2,
+    90000 // 90 second timeout - if schnell isn't fast, fail quickly and fall back
   );
 
   if (imageBase64) {

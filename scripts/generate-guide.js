@@ -467,10 +467,11 @@ function generateImagePrompt(topic) {
 // Helper function to try generating image with a specific FLUX model
 async function tryGenerateWithModel(promptData, modelUrl, modelName, steps, maxRetries = 3, timeoutMs = 300000) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    let requestBody;
     try {
       console.log(`Attempt ${attempt}/${maxRetries}: Sending prompt to ${modelName}...`);
 
-      const requestBody = {
+      requestBody = {
         prompt: promptData.prompt,
         width: 1024,
         height: 1024,

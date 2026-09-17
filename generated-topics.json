@@ -116,5 +116,6 @@
   "Understanding Gradient Vanishing and Exploding",
   "Understanding Attention Scores and Weights",
   "Understanding Feature Engineering",
-  "What is Online Learning?"
+  "What is Online Learning?",
+  "What is Model Calibration?"
 ]
